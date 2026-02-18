@@ -58,7 +58,7 @@ config:
 pluginsManager:
   sources:
     - name: headlamp-tns-csi-plugin
-      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.0/headlamp-tns-csi-plugin-0.2.0.tar.gz
 ```
 
 Or install via the Headlamp UI:
@@ -73,8 +73,8 @@ Or install via the Headlamp UI:
 Download the `.tar.gz` from the [GitHub releases page](https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases), then extract into Headlamp's plugin directory:
 
 ```bash
-wget https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
-tar xzf headlamp-tns-csi-plugin-0.1.0.tar.gz -C /headlamp/plugins/
+wget https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.0/headlamp-tns-csi-plugin-0.2.0.tar.gz
+tar xzf headlamp-tns-csi-plugin-0.2.0.tar.gz -C /headlamp/plugins/
 ```
 
 ### Option 3: Build from Source

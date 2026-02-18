@@ -28,7 +28,7 @@ import VolumesPage from './components/VolumesPage';
 registerSidebarEntry({
   parent: null,
   name: 'tns-csi',
-  label: 'TNS CSI',
+  label: 'TrueNAS',
   url: '/tns-csi',
   icon: 'mdi:database-cog',
 });

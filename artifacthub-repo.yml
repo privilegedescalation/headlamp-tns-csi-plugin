@@ -1,0 +1,6 @@
+# Artifact Hub repository metadata
+# repositoryID is set after registering on artifacthub.io
+
+owners:
+  - name: privilegedescalation
+    email: ""

@@ -1,0 +1,60 @@
+version: "0.1.0"
+name: headlamp-tns-csi-plugin
+displayName: TNS CSI Plugin
+description: >-
+  Headlamp plugin for tns-csi CSI driver visibility and kbench benchmarking.
+  Surfaces StorageClasses, PersistentVolumes, VolumeSnapshots, Prometheus
+  metrics, and an interactive kbench storage benchmark runner.
+createdAt: "2026-02-18T00:00:00Z"
+license: Apache-2.0
+
+homeURL: https://github.com/privilegedescalation/headlamp-tns-csi-plugin
+appVersion: "0.1.0"
+
+keywords:
+  - headlamp
+  - kubernetes
+  - storage
+  - csi
+  - tns-csi
+  - truenas
+  - nfs
+  - nvmeof
+  - iscsi
+  - kbench
+  - benchmarking
+  - prometheus
+
+maintainers:
+  - name: privilegedescalation
+
+provider:
+  name: privilegedescalation
+
+links:
+  - name: GitHub
+    url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin
+  - name: Issues
+    url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/issues
+  - name: tns-csi driver
+    url: https://github.com/fenio/tns-csi
+  - name: kbench
+    url: https://github.com/longhorn/kbench
+
+changes:
+  - kind: added
+    description: "Overview dashboard: driver health, storage summary, protocol distribution, non-Bound PVC alerts"
+  - kind: added
+    description: "Storage Classes, Volumes, Snapshots pages with slide-in detail panels"
+  - kind: added
+    description: "Metrics page: Prometheus WebSocket health, volume ops, CSI ops from controller pod"
+  - kind: added
+    description: "Benchmark page: kbench Job+PVC lifecycle, FIO log parser, results with IOPS/bandwidth/latency cards"
+  - kind: added
+    description: "PVC detail injection: TNS-CSI section on Headlamp PVC detail pages"
+
+annotations:
+  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz"
+  headlamp/plugin/archive-checksum: "sha256:14a3e8c13d0b894a41aa1cfccbcb1f6af09dcbb8fd95c7040a540987ea2096a7"
+  headlamp/plugin/version-compat: ">=0.20.0"
+  headlamp/plugin/distro-compat: "in-cluster,web,app"

@@ -1,12 +1,16 @@
 version: "0.1.0"
 name: headlamp-tns-csi-plugin
-displayName: TNS CSI Plugin
+displayName: TrueNAS CSI (tns-csi)
 description: >-
-  Headlamp plugin for tns-csi CSI driver visibility and kbench benchmarking.
-  Surfaces StorageClasses, PersistentVolumes, VolumeSnapshots, Prometheus
-  metrics, and an interactive kbench storage benchmark runner.
+  Headlamp plugin for tns-csi CSI driver visibility and kbench storage
+  benchmarking. Surfaces StorageClasses with protocol/pool/server details,
+  PersistentVolumes, VolumeSnapshots, Prometheus metrics from the controller
+  pod, and an interactive kbench benchmark runner with FIO result cards.
+  Supports NFS, NVMe-oF, and iSCSI protocols. Read-only except for the
+  Benchmark page.
 createdAt: "2026-02-18T00:00:00Z"
 license: Apache-2.0
+category: storage
 
 homeURL: https://github.com/privilegedescalation/headlamp-tns-csi-plugin
 appVersion: "0.1.0"
@@ -27,7 +31,7 @@ keywords:
 
 maintainers:
   - name: privilegedescalation
-    email: privilegedescalation@users.noreply.github.com
+    email: chris@farhood.org
 
 provider:
   name: privilegedescalation

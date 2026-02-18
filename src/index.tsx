@@ -1,34 +1,44 @@
 /**
  * headlamp-tns-csi-plugin — entry point.
  *
- * Registers sidebar entries, routes, detail view section, and plugin settings
- * for the tns-csi CSI driver Headlamp plugin.
+ * Registers sidebar entries, routes, detail view sections, table column
+ * processors, header actions, and app bar action for the tns-csi CSI driver.
  */
 
 import {
+  registerAppBarAction,
+  registerDetailsViewHeaderAction,
   registerDetailsViewSection,
   registerPluginSettings,
+  registerResourceTableColumnsProcessor,
   registerRoute,
   registerSidebarEntry,
 } from '@kinvolk/headlamp-plugin/lib';
 import React from 'react';
 import { TnsCsiDataProvider } from './api/TnsCsiDataContext';
+import AppBarDriverBadge from './components/AppBarDriverBadge';
+import TnsCsiSettings from './components/TnsCsiSettings';
 import BenchmarkPage from './components/BenchmarkPage';
+import DriverPodDetailSection from './components/DriverPodDetailSection';
+import { buildPVColumns, buildStorageClassColumns } from './components/integrations/StorageClassColumns';
+import StorageClassBenchmarkButton from './components/integrations/StorageClassBenchmarkButton';
 import MetricsPage from './components/MetricsPage';
 import OverviewPage from './components/OverviewPage';
 import PVCDetailSection from './components/PVCDetailSection';
+import PVDetailSection from './components/PVDetailSection';
 import SnapshotsPage from './components/SnapshotsPage';
 import StorageClassesPage from './components/StorageClassesPage';
 import VolumesPage from './components/VolumesPage';
 
 // ---------------------------------------------------------------------------
-// Sidebar entries
+// Sidebar entries (trimmed from 6 to 4 — Storage Classes and Volumes now
+// surface via native Headlamp tables with injected columns/sections)
 // ---------------------------------------------------------------------------
 
 registerSidebarEntry({
   parent: null,
   name: 'tns-csi',
-  label: 'TrueNAS',
+  label: 'TrueNAS (tns-csi)',
   url: '/tns-csi',
   icon: 'mdi:database-cog',
 });
@@ -39,22 +49,6 @@ registerSidebarEntry({
   label: 'Overview',
   url: '/tns-csi',
   icon: 'mdi:view-dashboard',
-});
-
-registerSidebarEntry({
-  parent: 'tns-csi',
-  name: 'tns-csi-storage-classes',
-  label: 'Storage Classes',
-  url: '/tns-csi/storage-classes',
-  icon: 'mdi:database',
-});
-
-registerSidebarEntry({
-  parent: 'tns-csi',
-  name: 'tns-csi-volumes',
-  label: 'Volumes',
-  url: '/tns-csi/volumes',
-  icon: 'mdi:harddisk',
 });
 
 registerSidebarEntry({
@@ -82,7 +76,7 @@ registerSidebarEntry({
 });
 
 // ---------------------------------------------------------------------------
-// Routes
+// Routes (keep all routes so direct links still work)
 // ---------------------------------------------------------------------------
 
 registerRoute({
@@ -97,9 +91,11 @@ registerRoute({
   ),
 });
 
+// Routes for storage-classes and volumes are kept for direct URL access
+// but are no longer in the sidebar — native Headlamp tables have tns-csi columns.
 registerRoute({
   path: '/tns-csi/storage-classes',
-  sidebar: 'tns-csi-storage-classes',
+  sidebar: 'tns-csi-overview',
   name: 'tns-csi-storage-classes',
   exact: true,
   component: () => (
@@ -111,7 +107,7 @@ registerRoute({
 
 registerRoute({
   path: '/tns-csi/volumes',
-  sidebar: 'tns-csi-volumes',
+  sidebar: 'tns-csi-overview',
   name: 'tns-csi-volumes',
   exact: true,
   component: () => (
@@ -158,7 +154,7 @@ registerRoute({
 });
 
 // ---------------------------------------------------------------------------
-// PVC detail view injection
+// Detail view section — PVC pages
 // ---------------------------------------------------------------------------
 
 registerDetailsViewSection(({ resource }) => {
@@ -172,18 +168,58 @@ registerDetailsViewSection(({ resource }) => {
 });
 
 // ---------------------------------------------------------------------------
-// Plugin settings
+// Detail view section — PV pages
 // ---------------------------------------------------------------------------
 
-function TnsCsiSettings() {
-  return (
-    <div style={{ padding: '16px' }}>
-      <p style={{ color: 'var(--mui-palette-text-secondary)' }}>
-        TNS-CSI plugin settings. Configure defaults below.
-      </p>
-      {/* Future: default namespace, metrics refresh interval, auto-cleanup setting */}
-    </div>
-  );
-}
+registerDetailsViewSection(({ resource }) => {
+  if (resource?.kind !== 'PersistentVolume') return null;
+  return <PVDetailSection resource={resource} />;
+});
+
+// ---------------------------------------------------------------------------
+// Detail view section — Pod pages (tns-csi driver pods only)
+// ---------------------------------------------------------------------------
+
+registerDetailsViewSection(({ resource }) => {
+  if (resource?.kind !== 'Pod') return null;
+  return <DriverPodDetailSection resource={resource} />;
+});
+
+// ---------------------------------------------------------------------------
+// Table column processors — native StorageClass and PV tables
+// ---------------------------------------------------------------------------
+
+registerResourceTableColumnsProcessor(({ id, columns }) => {
+  if (id === 'headlamp-storageclasses') {
+    return [...columns, ...buildStorageClassColumns()];
+  }
+  if (id === 'headlamp-persistentvolumes') {
+    return [...columns, ...buildPVColumns()];
+  }
+  return columns;
+});
+
+// ---------------------------------------------------------------------------
+// Header action — StorageClass detail page Benchmark shortcut
+// ---------------------------------------------------------------------------
+
+registerDetailsViewHeaderAction(({ resource }) => {
+  if (resource?.kind !== 'StorageClass') return null;
+  return <StorageClassBenchmarkButton resource={resource} />;
+});
+
+// ---------------------------------------------------------------------------
+// App bar action — driver health badge
+// ---------------------------------------------------------------------------
+
+registerAppBarAction(() => (
+  <TnsCsiDataProvider>
+    <AppBarDriverBadge />
+  </TnsCsiDataProvider>
+));
+
+// ---------------------------------------------------------------------------
+// Plugin settings
+// ---------------------------------------------------------------------------
 
 registerPluginSettings('headlamp-tns-csi-plugin', TnsCsiSettings, true);

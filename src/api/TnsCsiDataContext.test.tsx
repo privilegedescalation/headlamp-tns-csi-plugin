@@ -20,6 +20,12 @@ vi.mock('@kinvolk/headlamp-plugin/lib', () => ({
       },
     },
   },
+  ConfigStore: class {
+    get() { return {}; }
+    set() {}
+    update() {}
+    useConfig() { return () => ({}); }
+  },
 }));
 
 import { TnsCsiDataProvider, useTnsCsiContext } from './TnsCsiDataContext';

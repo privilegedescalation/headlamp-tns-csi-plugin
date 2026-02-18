@@ -58,6 +58,8 @@ export default function OverviewPage() {
     persistentVolumeClaims,
     controllerPods,
     nodePods,
+    poolStats,
+    poolStatsError,
     loading,
     error,
     refresh,
@@ -108,6 +110,27 @@ export default function OverviewPage() {
 
   const chartData = protocolChartData(storageClasses);
   const totalScs = storageClasses.length;
+
+  // Capacity by pool: join volumeCapacityBytes samples (volume_id, protocol)
+  // with PV volumeHandle → pool name from volumeAttributes.
+  const capacityByPool: Map<string, number> = React.useMemo(() => {
+    const map = new Map<string, number>();
+    if (!metrics) return map;
+    // Build lookup: volumeHandle → pool name
+    const handleToPool = new Map<string, string>();
+    for (const pv of persistentVolumes) {
+      const handle = pv.spec.csi?.volumeHandle;
+      const pool = pv.spec.csi?.volumeAttributes?.['pool'];
+      if (handle && pool) handleToPool.set(handle, pool);
+    }
+    for (const sample of metrics.volumeCapacityBytes) {
+      const volumeId = sample.labels['volume_id'];
+      if (!volumeId) continue;
+      const pool = handleToPool.get(volumeId) ?? 'unknown';
+      map.set(pool, (map.get(pool) ?? 0) + sample.value);
+    }
+    return map;
+  }, [metrics, persistentVolumes]);
 
   return (
     <>
@@ -233,6 +256,66 @@ export default function OverviewPage() {
           ]}
         />
       </SectionBox>
+
+      {/* Pool capacity — real data from TrueNAS API when configured */}
+      {poolStats.length > 0 && (
+        <SectionBox title="Pool Capacity">
+          <SimpleTable
+            columns={[
+              { label: 'Pool', getter: (p) => p.name },
+              {
+                label: 'Status',
+                getter: (p) => (
+                  <StatusLabel status={p.status === 'ONLINE' ? 'success' : 'warning'}>
+                    {p.status}
+                  </StatusLabel>
+                ),
+              },
+              { label: 'Total', getter: (p) => formatBytes(p.size) },
+              { label: 'Used', getter: (p) => formatBytes(p.allocated) },
+              { label: 'Free', getter: (p) => formatBytes(p.free) },
+              {
+                label: 'Used %',
+                getter: (p) => p.size > 0
+                  ? `${Math.round((p.allocated / p.size) * 100)}%`
+                  : '—',
+              },
+            ]}
+            data={poolStats}
+          />
+        </SectionBox>
+      )}
+
+      {poolStatsError && (
+        <SectionBox title="Pool Capacity Unavailable">
+          <NameValueTable
+            rows={[
+              {
+                name: 'Error',
+                value: <StatusLabel status="warning">{poolStatsError}</StatusLabel>,
+              },
+              {
+                name: 'Note',
+                value: 'Check your TrueNAS API key and server address in plugin settings.',
+              },
+            ]}
+          />
+        </SectionBox>
+      )}
+
+      {/* Provisioned capacity by pool (from Prometheus metrics — shown when TrueNAS API not configured) */}
+      {poolStats.length === 0 && !poolStatsError && capacityByPool.size > 0 && (
+        <SectionBox title="Provisioned Capacity by Pool">
+          <NameValueTable
+            rows={[...capacityByPool.entries()]
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([pool, bytes]) => ({
+                name: pool,
+                value: formatBytes(bytes),
+              }))}
+          />
+        </SectionBox>
+      )}
 
       {/* Non-bound PVCs warning */}
       {nonBoundPvcs.length > 0 && (

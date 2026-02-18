@@ -22,6 +22,7 @@ import {
   VolumeSnapshot,
   VolumeSnapshotClass,
 } from './k8s';
+import { fetchTruenasPoolStats, getTnsCsiConfig, PoolStats } from './truenas';
 
 // ---------------------------------------------------------------------------
 // Context shape
@@ -45,6 +46,10 @@ export interface TnsCsiContextValue {
   volumeSnapshots: VolumeSnapshot[];
   volumeSnapshotClasses: VolumeSnapshotClass[];
   snapshotCrdAvailable: boolean;
+
+  // TrueNAS pool capacity (only populated when API key is configured)
+  poolStats: PoolStats[];
+  poolStatsError: string | null;
 
   // Loading / error state
   loading: boolean;
@@ -88,6 +93,8 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
   const [asyncLoading, setAsyncLoading] = useState(true);
   const [asyncError, setAsyncError] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [poolStats, setPoolStats] = useState<PoolStats[]>([]);
+  const [poolStatsError, setPoolStatsError] = useState<string | null>(null);
 
   const refresh = useCallback(() => {
     setRefreshKey(k => k + 1);
@@ -161,7 +168,32 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
             setVolumeSnapshots([]);
           }
         }
-      } catch (err: unknown) {
+      // TrueNAS pool stats (only when API key is configured)
+      const config = getTnsCsiConfig();
+      if (config.truenasApiKey.trim()) {
+        // Determine server: explicit override → first SC server param → fail gracefully
+        const server = config.truenasServerOverride.trim();
+        if (server) {
+          try {
+            const pools = await fetchTruenasPoolStats(server, config.truenasApiKey.trim());
+            if (!cancelled) {
+              setPoolStats(pools);
+              setPoolStatsError(null);
+            }
+          } catch (err: unknown) {
+            if (!cancelled) {
+              setPoolStats([]);
+              setPoolStatsError(err instanceof Error ? err.message : String(err));
+            }
+          }
+        }
+      } else {
+        if (!cancelled) {
+          setPoolStats([]);
+          setPoolStatsError(null);
+        }
+      }
+    } catch (err: unknown) {
         if (!cancelled) {
           setAsyncError(err instanceof Error ? err.message : String(err));
         }
@@ -178,19 +210,34 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
   // Derived / filtered values — memoized to avoid recomputation on every render
   // ---------------------------------------------------------------------------
 
+  // Headlamp useList() returns KubeObject class instances that store raw Kubernetes
+  // JSON under `.jsonData`. Direct property access only works for fields that have
+  // explicit getter definitions in the class (e.g. provisioner, reclaimPolicy).
+  // Fields like `parameters`, `spec`, `status` must be read from `.jsonData`.
+  // We extract jsonData here so our plain-object type helpers work correctly.
+  const extractJsonData = (items: unknown[]): unknown[] =>
+    items.map(item =>
+      item && typeof item === 'object' && 'jsonData' in item
+        ? (item as { jsonData: unknown }).jsonData
+        : item
+    );
+
   const storageClasses = useMemo(() => {
     if (!allStorageClasses) return [];
-    return filterTnsCsiStorageClasses(allStorageClasses as unknown[]);
+    return filterTnsCsiStorageClasses(extractJsonData(allStorageClasses as unknown[]));
   }, [allStorageClasses]);
 
   const persistentVolumes = useMemo(() => {
     if (!allPvs) return [];
-    return filterTnsCsiPersistentVolumes(allPvs as unknown[]);
+    return filterTnsCsiPersistentVolumes(extractJsonData(allPvs as unknown[]));
   }, [allPvs]);
 
   const persistentVolumeClaims = useMemo(() => {
     if (!allPvcs || persistentVolumes.length === 0) return [];
-    return filterTnsCsiPVCs(allPvcs as TnsCsiPersistentVolumeClaim[], persistentVolumes);
+    return filterTnsCsiPVCs(
+      extractJsonData(allPvcs as unknown[]) as TnsCsiPersistentVolumeClaim[],
+      persistentVolumes
+    );
   }, [allPvcs, persistentVolumes]);
 
   // ---------------------------------------------------------------------------
@@ -224,6 +271,8 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
       volumeSnapshots,
       volumeSnapshotClasses,
       snapshotCrdAvailable,
+      poolStats,
+      poolStatsError,
       loading,
       error,
       refresh,
@@ -239,6 +288,8 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
       volumeSnapshots,
       volumeSnapshotClasses,
       snapshotCrdAvailable,
+      poolStats,
+      poolStatsError,
       loading,
       error,
       refresh,

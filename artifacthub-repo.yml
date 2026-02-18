@@ -1,5 +1,5 @@
 # Artifact Hub repository metadata
-# repositoryID is set after registering on artifacthub.io
+repositoryID: cae81660-2624-4e02-8ac2-a176cbe94402
 
 owners:
   - name: privilegedescalation

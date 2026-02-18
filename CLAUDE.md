@@ -75,6 +75,18 @@ When launching subagents for tasks in this repo:
   using Glob, Grep, Read, and GitHub MCP directly, then delegate scoped write tasks to agents
 - The main session has broader tool approvals than subagent sandboxes; use it for exploration
 
+### Local agents (`.claude/agents/`)
+
+Three meta-orchestration agents are installed for this project:
+
+| Agent | Model | Use when |
+|---|---|---|
+| `agent-organizer` | sonnet | Decomposing a large task into subtasks and selecting the right agent for each |
+| `multi-agent-coordinator` | opus | Running multiple concurrent agents that need to share state and synchronize |
+| `agent-installer` | haiku | Browsing or installing additional agents from awesome-claude-code-subagents |
+
+Use `agent-organizer` first when a task is large enough to require multiple agents. It will plan the team composition and hand off to `multi-agent-coordinator` for execution.
+
 ## Testing
 
 All tests must pass before committing:

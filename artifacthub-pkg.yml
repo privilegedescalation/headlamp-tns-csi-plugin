@@ -27,6 +27,7 @@ keywords:
 
 maintainers:
   - name: privilegedescalation
+    email: privilegedescalation@users.noreply.github.com
 
 provider:
   name: privilegedescalation

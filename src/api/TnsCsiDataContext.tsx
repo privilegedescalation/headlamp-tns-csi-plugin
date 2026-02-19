@@ -168,32 +168,32 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
             setVolumeSnapshots([]);
           }
         }
-      // TrueNAS pool stats (only when API key is configured)
-      const config = getTnsCsiConfig();
-      if (config.truenasApiKey.trim()) {
-        // Determine server: explicit override → first SC server param → fail gracefully
-        const server = config.truenasServerOverride.trim();
-        if (server) {
-          try {
-            const pools = await fetchTruenasPoolStats(server, config.truenasApiKey.trim());
-            if (!cancelled) {
-              setPoolStats(pools);
-              setPoolStatsError(null);
-            }
-          } catch (err: unknown) {
-            if (!cancelled) {
-              setPoolStats([]);
-              setPoolStatsError(err instanceof Error ? err.message : String(err));
+
+        // TrueNAS pool stats (only when API key is configured)
+        const config = getTnsCsiConfig();
+        if (config.truenasApiKey.trim()) {
+          const server = config.truenasServerOverride.trim();
+          if (server) {
+            try {
+              const pools = await fetchTruenasPoolStats(server, config.truenasApiKey.trim());
+              if (!cancelled) {
+                setPoolStats(pools);
+                setPoolStatsError(null);
+              }
+            } catch (err: unknown) {
+              if (!cancelled) {
+                setPoolStats([]);
+                setPoolStatsError(err instanceof Error ? err.message : String(err));
+              }
             }
           }
+        } else {
+          if (!cancelled) {
+            setPoolStats([]);
+            setPoolStatsError(null);
+          }
         }
-      } else {
-        if (!cancelled) {
-          setPoolStats([]);
-          setPoolStatsError(null);
-        }
-      }
-    } catch (err: unknown) {
+      } catch (err: unknown) {
         if (!cancelled) {
           setAsyncError(err instanceof Error ? err.message : String(err));
         }

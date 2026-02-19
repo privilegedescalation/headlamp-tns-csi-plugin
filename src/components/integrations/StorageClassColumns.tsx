@@ -2,7 +2,7 @@
  * StorageClassColumns — registerResourceTableColumnsProcessor for StorageClass and PV tables.
  *
  * Adds Protocol/Pool/Server columns to the native /storage-classes table and
- * Protocol/Volume Handle columns to the native /persistent-volumes table.
+ * Protocol/Dataset columns to the native /persistent-volumes table.
  *
  * Items in column processors are KubeObject class instances from Headlamp.
  * Raw Kubernetes JSON fields (parameters, spec, status) must be accessed
@@ -131,18 +131,18 @@ export function buildPVColumns() {
       },
     },
     {
-      label: 'Volume Handle',
+      label: 'Dataset',
       getValue: (pv: unknown): string | null => {
         const driver = getField(pv, 'spec', 'csi', 'driver') as string | undefined;
         if (driver !== TNS_CSI_PROVISIONER) return null;
-        const h = getField(pv, 'spec', 'csi', 'volumeHandle');
-        return typeof h === 'string' ? h : null;
+        const d = getField(pv, 'spec', 'csi', 'volumeAttributes', 'datasetName');
+        return typeof d === 'string' ? d : null;
       },
       render: (pv: unknown) => {
         const driver = getField(pv, 'spec', 'csi', 'driver') as string | undefined;
         if (driver !== TNS_CSI_PROVISIONER) return <span>—</span>;
-        const handle = getField(pv, 'spec', 'csi', 'volumeHandle') as string | undefined;
-        return <span style={{ fontFamily: 'monospace', fontSize: '0.85em' }}>{handle ?? '—'}</span>;
+        const dataset = getField(pv, 'spec', 'csi', 'volumeAttributes', 'datasetName') as string | undefined;
+        return <span style={{ fontFamily: 'monospace', fontSize: '0.85em' }}>{dataset ?? '—'}</span>;
       },
     },
   ];

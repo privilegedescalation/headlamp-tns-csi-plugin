@@ -1,4 +1,4 @@
-version: "0.2.1"
+version: "0.2.2"
 name: headlamp-tns-csi-plugin
 displayName: TrueNAS CSI (tns-csi)
 description: >-
@@ -47,19 +47,13 @@ links:
     url: https://github.com/longhorn/kbench
 
 changes:
-  - kind: added
-    description: "Overview dashboard: driver health, storage summary, protocol distribution, non-Bound PVC alerts"
-  - kind: added
-    description: "Storage Classes, Volumes, Snapshots pages with slide-in detail panels"
-  - kind: added
-    description: "Metrics page: Prometheus WebSocket health, volume ops, CSI ops from controller pod"
-  - kind: added
-    description: "Benchmark page: kbench Job+PVC lifecycle, FIO log parser, results with IOPS/bandwidth/latency cards"
-  - kind: added
-    description: "PVC detail injection: TNS-CSI section on Headlamp PVC detail pages"
+  - kind: fixed
+    description: "Duplicate Protocol/Pool columns on mixed-driver clusters now merged into a single shared column"
+  - kind: fixed
+    description: "Plugin settings entry renamed from headlamp-tns-csi-plugin to tns-csi"
 
 annotations:
-  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.1/headlamp-tns-csi-plugin-0.2.1.tar.gz"
-  headlamp/plugin/archive-checksum: "sha256:9d53ae89996be6edbfbdb239c95d9d808fcab2de19c23b8f7b8d9abe1c51877b"
+  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.2/headlamp-tns-csi-plugin-0.2.2.tar.gz"
+  headlamp/plugin/archive-checksum: "sha256:fa6506d581ea5a609598912596995f3dd2b2501ee4f66aff5f6cd93beb525549"
   headlamp/plugin/version-compat: ">=0.20.0"
   headlamp/plugin/distro-compat: "in-cluster,web,app"

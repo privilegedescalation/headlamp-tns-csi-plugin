@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-02-19
+
+### Fixed
+
+- **OverviewPage crash** — brace mismatch in `TnsCsiDataContext` placed TrueNAS pool stats fetch outside the outer try block, breaking the entire context provider
+- **PV Pool column** — tns-csi driver writes `datasetName` (e.g. `pool0/pvc-abc`), not `pool`, into `volumeAttributes`; Pool is now correctly derived from the first path segment
+- **App bar badge removed** — removed the colored tns-csi status bubble from the top nav bar
+
 ## [0.2.0] - 2026-02-18
 
 ### Added
@@ -47,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TypeScript strict mode with zero `any` types
 - ESLint + Prettier code quality tooling
 
-[Unreleased]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/tag/v0.1.0

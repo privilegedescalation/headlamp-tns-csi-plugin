@@ -2,7 +2,8 @@
  * StorageClassColumns — registerResourceTableColumnsProcessor for StorageClass and PV tables.
  *
  * Adds Protocol/Pool/Server columns to the native /storage-classes table and
- * Protocol/Dataset columns to the native /persistent-volumes table.
+ * Protocol/Pool columns to the native /persistent-volumes table.
+ * Pool on PVs is derived from the first segment of volumeAttributes.datasetName.
  *
  * Items in column processors are KubeObject class instances from Headlamp.
  * Raw Kubernetes JSON fields (parameters, spec, status) must be accessed
@@ -131,18 +132,21 @@ export function buildPVColumns() {
       },
     },
     {
-      label: 'Dataset',
+      label: 'Pool',
       getValue: (pv: unknown): string | null => {
         const driver = getField(pv, 'spec', 'csi', 'driver') as string | undefined;
         if (driver !== TNS_CSI_PROVISIONER) return null;
+        // tns-csi stores pool as the first segment of datasetName (e.g. "tank/pvc-abc")
         const d = getField(pv, 'spec', 'csi', 'volumeAttributes', 'datasetName');
-        return typeof d === 'string' ? d : null;
+        if (typeof d !== 'string') return null;
+        return d.split('/')[0] ?? null;
       },
       render: (pv: unknown) => {
         const driver = getField(pv, 'spec', 'csi', 'driver') as string | undefined;
         if (driver !== TNS_CSI_PROVISIONER) return <span>—</span>;
         const dataset = getField(pv, 'spec', 'csi', 'volumeAttributes', 'datasetName') as string | undefined;
-        return <span style={{ fontFamily: 'monospace', fontSize: '0.85em' }}>{dataset ?? '—'}</span>;
+        const pool = dataset?.split('/')[0];
+        return <span>{pool ?? '—'}</span>;
       },
     },
   ];

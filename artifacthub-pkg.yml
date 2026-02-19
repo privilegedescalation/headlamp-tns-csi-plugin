@@ -1,4 +1,4 @@
-version: "0.2.0"
+version: "0.2.1"
 name: headlamp-tns-csi-plugin
 displayName: TrueNAS CSI (tns-csi)
 description: >-
@@ -59,7 +59,7 @@ changes:
     description: "PVC detail injection: TNS-CSI section on Headlamp PVC detail pages"
 
 annotations:
-  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.0/headlamp-tns-csi-plugin-0.2.0.tar.gz"
-  headlamp/plugin/archive-checksum: "sha256:056bd353786f96627d7ff4c79e96cce40b28af3fb33daf76c4adf73d650bfffc"
+  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.1/headlamp-tns-csi-plugin-0.2.1.tar.gz"
+  headlamp/plugin/archive-checksum: "sha256:9d53ae89996be6edbfbdb239c95d9d808fcab2de19c23b8f7b8d9abe1c51877b"
   headlamp/plugin/version-compat: ">=0.20.0"
   headlamp/plugin/distro-compat: "in-cluster,web,app"

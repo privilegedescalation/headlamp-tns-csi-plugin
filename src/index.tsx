@@ -6,7 +6,6 @@
  */
 
 import {
-  registerAppBarAction,
   registerDetailsViewHeaderAction,
   registerDetailsViewSection,
   registerPluginSettings,
@@ -16,7 +15,6 @@ import {
 } from '@kinvolk/headlamp-plugin/lib';
 import React from 'react';
 import { TnsCsiDataProvider } from './api/TnsCsiDataContext';
-import AppBarDriverBadge from './components/AppBarDriverBadge';
 import TnsCsiSettings from './components/TnsCsiSettings';
 import BenchmarkPage from './components/BenchmarkPage';
 import DriverPodDetailSection from './components/DriverPodDetailSection';
@@ -207,16 +205,6 @@ registerDetailsViewHeaderAction(({ resource }) => {
   if (resource?.kind !== 'StorageClass') return null;
   return <StorageClassBenchmarkButton resource={resource} />;
 });
-
-// ---------------------------------------------------------------------------
-// App bar action — driver health badge
-// ---------------------------------------------------------------------------
-
-registerAppBarAction(() => (
-  <TnsCsiDataProvider>
-    <AppBarDriverBadge />
-  </TnsCsiDataProvider>
-));
 
 // ---------------------------------------------------------------------------
 // Plugin settings

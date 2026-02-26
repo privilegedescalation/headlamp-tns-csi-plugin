@@ -18,7 +18,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import { formatAge, formatProtocol, phaseToStatus } from '../api/k8s';
 import type { TnsCsiMetrics } from '../api/metrics';
-import { extractTnsCsiMetrics, fetchControllerMetrics, parsePrometheusText } from '../api/metrics';
+import { fetchControllerMetrics } from '../api/metrics';
 import DriverStatusCard from './DriverStatusCard';
 
 // ---------------------------------------------------------------------------
@@ -85,6 +85,24 @@ export default function OverviewPage() {
     void fetchMetrics();
   }, [fetchMetrics]);
 
+  const capacityByPool: Map<string, number> = React.useMemo(() => {
+    const map = new Map<string, number>();
+    if (!metrics) return map;
+    const handleToPool = new Map<string, string>();
+    for (const pv of persistentVolumes) {
+      const handle = pv.spec.csi?.volumeHandle;
+      const pool = pv.spec.csi?.volumeAttributes?.['pool'];
+      if (handle && pool) handleToPool.set(handle, pool);
+    }
+    for (const sample of metrics.volumeCapacityBytes) {
+      const volumeId = sample.labels['volume_id'];
+      if (!volumeId) continue;
+      const pool = handleToPool.get(volumeId) ?? 'unknown';
+      map.set(pool, (map.get(pool) ?? 0) + sample.value);
+    }
+    return map;
+  }, [metrics, persistentVolumes]);
+
   if (loading) {
     return <Loader title="Loading TNS-CSI data..." />;
   }
@@ -110,27 +128,6 @@ export default function OverviewPage() {
 
   const chartData = protocolChartData(storageClasses);
   const totalScs = storageClasses.length;
-
-  // Capacity by pool: join volumeCapacityBytes samples (volume_id, protocol)
-  // with PV volumeHandle → pool name from volumeAttributes.
-  const capacityByPool: Map<string, number> = React.useMemo(() => {
-    const map = new Map<string, number>();
-    if (!metrics) return map;
-    // Build lookup: volumeHandle → pool name
-    const handleToPool = new Map<string, string>();
-    for (const pv of persistentVolumes) {
-      const handle = pv.spec.csi?.volumeHandle;
-      const pool = pv.spec.csi?.volumeAttributes?.['pool'];
-      if (handle && pool) handleToPool.set(handle, pool);
-    }
-    for (const sample of metrics.volumeCapacityBytes) {
-      const volumeId = sample.labels['volume_id'];
-      if (!volumeId) continue;
-      const pool = handleToPool.get(volumeId) ?? 'unknown';
-      map.set(pool, (map.get(pool) ?? 0) + sample.value);
-    }
-    return map;
-  }, [metrics, persistentVolumes]);
 
   return (
     <>

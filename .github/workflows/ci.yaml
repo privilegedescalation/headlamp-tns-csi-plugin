@@ -7,31 +7,57 @@ on:
     branches: [main]
 
 jobs:
-  lint-and-test:
+  lint:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
 
-      - name: Install dependencies
-        run: npm ci
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run tsc
 
-      - name: Build plugin
-        run: npx @kinvolk/headlamp-plugin build
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx vitest run --reporter=default --reporter=junit --outputFile=test-results.xml
+      - uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Test Results
+          path: test-results.xml
+          reporter: java-junit
 
-      - name: Lint
-        run: npx eslint --ext .ts,.tsx src/
-
-      - name: Type-check
-        run: npx tsc --noEmit
-
-      - name: Run unit tests
-        run: npm test
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [lint, typecheck, test]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build

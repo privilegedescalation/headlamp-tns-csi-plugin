@@ -61,6 +61,16 @@ jobs:
           sed -i "s|^version:.*|version: \"${VERSION}\"|" artifacthub-pkg.yml
           sed -i "s|headlamp/plugin/archive-url:.*|headlamp/plugin/archive-url: \"${RELEASE_URL}\"|" artifacthub-pkg.yml
 
+      - name: Update appVersion from latest tns-csi release
+        run: |
+          APP_VERSION=$(curl -sf https://api.github.com/repos/fenio/tns-csi/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+          if [ -z "$APP_VERSION" ] || [ "$APP_VERSION" = "null" ]; then
+            echo "::warning::Could not fetch latest tns-csi release, skipping appVersion update"
+          else
+            sed -i "s|^appVersion:.*|appVersion: \"${APP_VERSION}\"|" artifacthub-pkg.yml
+            echo "appVersion set to ${APP_VERSION}"
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

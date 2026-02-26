@@ -13,7 +13,7 @@ license: Apache-2.0
 category: storage
 
 homeURL: https://github.com/privilegedescalation/headlamp-tns-csi-plugin
-appVersion: "0.1.0"
+appVersion: "0.12.0"
 
 keywords:
   - headlamp

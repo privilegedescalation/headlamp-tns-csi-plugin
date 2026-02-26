@@ -47,8 +47,20 @@ links:
     url: https://github.com/longhorn/kbench
 
 changes:
+  - kind: added
+    description: "Component tests for all 8 UI components"
   - kind: changed
-    description: "Package renamed to tns-csi so the plugin displays correctly in Headlamp's Plugins list"
+    description: "CI workflow split into parallel lint, typecheck, test jobs with build gating on all three"
+  - kind: changed
+    description: "JUnit test reporter for PR test result visibility"
+  - kind: changed
+    description: "Node.js 20 upgraded to 22 (current LTS) in all workflows"
+  - kind: changed
+    description: "Release workflow gated on CI passing with concurrency protection"
+  - kind: fixed
+    description: "Conditional React hook call in OverviewPage"
+  - kind: fixed
+    description: "appVersion now tracks upstream tns-csi driver release (0.12.0)"
 
 annotations:
   headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz"

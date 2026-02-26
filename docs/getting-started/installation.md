@@ -4,7 +4,7 @@
 
 ### Method 1: Headlamp Plugin Manager (Recommended)
 
-The plugin is published on [Artifact Hub](https://artifacthub.io/packages/headlamp/headlamp-tns-csi-plugin/headlamp-tns-csi-plugin).
+The plugin is published on [Artifact Hub](https://artifacthub.io/packages/headlamp/tns-csi/headlamp-tns-csi-plugin).
 
 **Via Headlamp UI:**
 
@@ -21,8 +21,8 @@ config:
 
 pluginsManager:
   sources:
-    - name: headlamp-tns-csi-plugin
-      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+    - name: tns-csi
+      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
 ```
 
 **Via FluxCD HelmRelease:**
@@ -45,8 +45,8 @@ spec:
       pluginsDir: /headlamp/plugins
     pluginsManager:
       sources:
-        - name: headlamp-tns-csi-plugin
-          url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+        - name: tns-csi
+          url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
 ```
 
 ### Method 2: Manual Tarball Install
@@ -55,16 +55,16 @@ Download and extract the plugin directly:
 
 ```bash
 # Download the release tarball
-wget https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+wget https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
 
 # Verify the checksum
-echo "14a3e8c13d0b894a41aa1cfccbcb1f6af09dcbb8fd95c7040a540987ea2096a7  headlamp-tns-csi-plugin-0.1.0.tar.gz" | sha256sum --check
+echo "14a3e8c13d0b894a41aa1cfccbcb1f6af09dcbb8fd95c7040a540987ea2096a7  tns-csi-0.2.4.tar.gz" | sha256sum --check
 
 # Extract into your Headlamp plugins directory
-tar xzf headlamp-tns-csi-plugin-0.1.0.tar.gz -C /headlamp/plugins/
+tar xzf tns-csi-0.2.4.tar.gz -C /headlamp/plugins/
 ```
 
-The plugin directory should appear as `/headlamp/plugins/headlamp-tns-csi-plugin/`.
+The plugin directory should appear as `/headlamp/plugins/tns-csi/`.
 
 Restart Headlamp (or the pod) after extracting.
 
@@ -81,7 +81,7 @@ initContainers:
       - -c
       - |
         wget -O /tmp/plugin.tar.gz \
-          https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+          https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
         tar xzf /tmp/plugin.tar.gz -C /headlamp/plugins/
     volumeMounts:
       - name: plugins
@@ -98,10 +98,10 @@ cd headlamp-tns-csi-plugin
 npm install
 npm run build
 npm run package
-# Produces headlamp-tns-csi-plugin-0.1.0.tar.gz
+# Produces tns-csi-0.2.4.tar.gz
 
 # Extract to your Headlamp plugins directory
-tar xzf headlamp-tns-csi-plugin-0.1.0.tar.gz -C /headlamp/plugins/
+tar xzf tns-csi-0.2.4.tar.gz -C /headlamp/plugins/
 ```
 
 Or use `headlamp-plugin extract` for automatic placement:
@@ -129,7 +129,7 @@ For Plugin Manager installs, the catalog will show available updates.
 Remove the plugin directory from your Headlamp plugins directory:
 
 ```bash
-rm -rf /headlamp/plugins/headlamp-tns-csi-plugin/
+rm -rf /headlamp/plugins/tns-csi/
 ```
 
-Or via the Headlamp UI: **Settings → Plugins → headlamp-tns-csi-plugin → Uninstall**.
+Or via the Headlamp UI: **Settings → Plugins → tns-csi → Uninstall**.

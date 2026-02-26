@@ -27,8 +27,8 @@ config:
 
 pluginsManager:
   sources:
-    - name: headlamp-tns-csi-plugin
-      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+    - name: tns-csi
+      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
 ```
 
 Then upgrade your Headlamp release:

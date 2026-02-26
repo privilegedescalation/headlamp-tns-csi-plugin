@@ -27,7 +27,7 @@ This project follows a standard code of conduct:
 
 ### Prerequisites
 
-- Node.js 20 or later
+- Node.js 22 or later
 - npm
 - Access to a Kubernetes cluster with Headlamp and tns-csi installed (for end-to-end testing)
 - Git
@@ -53,7 +53,7 @@ This project follows a standard code of conduct:
 
 4. **Run tests:**
    ```bash
-   npm test          # 67 unit tests
+   npm test          # 159 unit tests
    npm run tsc       # TypeScript type-check
    ```
 
@@ -196,7 +196,7 @@ Add `Co-Authored-By` for pair programming or AI assistance:
 ```
 feat: add NVMe-oF protocol notes to StorageClass detail panel
 
-Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 Co-Authored-By: Happy <yesreply@happy.engineering>
 ```
 
@@ -209,7 +209,7 @@ Co-Authored-By: Happy <yesreply@happy.engineering>
    npm run build      # Verify build succeeds
    npm run lint       # Check for linting errors
    npm run tsc        # Type-check TypeScript
-   npm test           # Run 67 unit tests
+   npm test           # Run 159 unit tests
    ```
 
 2. **Update documentation:**
@@ -219,7 +219,7 @@ Co-Authored-By: Happy <yesreply@happy.engineering>
 
 3. **Write/update tests:**
    - Add unit tests for new functions/components
-   - Ensure all 67 tests (plus yours) pass
+   - Ensure all 159 tests (plus yours) pass
 
 ### Creating a PR
 
@@ -319,7 +319,7 @@ npm run tsc          # TypeScript check
 
 ### Unit Tests (Required)
 
-All 67 tests must pass before committing:
+All 159 tests must pass before committing:
 
 ```bash
 npm test        # vitest run

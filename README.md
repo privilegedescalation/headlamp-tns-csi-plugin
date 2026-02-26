@@ -1,6 +1,6 @@
 # Headlamp TNS-CSI Plugin
 
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/package/headlamp/headlamp-tns-csi-plugin/headlamp-tns-csi-plugin)](https://artifacthub.io/packages/headlamp/headlamp-tns-csi-plugin/headlamp-tns-csi-plugin)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/package/headlamp/tns-csi/headlamp-tns-csi-plugin)](https://artifacthub.io/packages/headlamp/tns-csi/headlamp-tns-csi-plugin)
 [![CI](https://github.com/privilegedescalation/headlamp-tns-csi-plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/privilegedescalation/headlamp-tns-csi-plugin/actions/workflows/ci.yaml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -49,7 +49,7 @@ The tns-csi driver must be deployed in `kube-system` with the standard `app.kube
 
 ### Option 1: Headlamp Plugin Manager (Recommended)
 
-The plugin is published on [Artifact Hub](https://artifacthub.io/packages/headlamp/headlamp-tns-csi-plugin/headlamp-tns-csi-plugin). Configure Headlamp via Helm:
+The plugin is published on [Artifact Hub](https://artifacthub.io/packages/headlamp/tns-csi/headlamp-tns-csi-plugin). Configure Headlamp via Helm:
 
 ```yaml
 config:
@@ -57,8 +57,8 @@ config:
 
 pluginsManager:
   sources:
-    - name: headlamp-tns-csi-plugin
-      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.0/headlamp-tns-csi-plugin-0.2.0.tar.gz
+    - name: tns-csi
+      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
 ```
 
 Or install via the Headlamp UI:
@@ -73,8 +73,8 @@ Or install via the Headlamp UI:
 Download the `.tar.gz` from the [GitHub releases page](https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases), then extract into Headlamp's plugin directory:
 
 ```bash
-wget https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.0/headlamp-tns-csi-plugin-0.2.0.tar.gz
-tar xzf headlamp-tns-csi-plugin-0.2.0.tar.gz -C /headlamp/plugins/
+wget https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
+tar xzf tns-csi-0.2.4.tar.gz -C /headlamp/plugins/
 ```
 
 ### Option 3: Build from Source
@@ -185,10 +185,10 @@ npm start  # Opens Headlamp at http://localhost:4466
 
 # Build for production
 npm run build        # outputs dist/main.js
-npm run package      # creates headlamp-tns-csi-plugin-<version>.tar.gz
+npm run package      # creates tns-csi-<version>.tar.gz
 
 # Run tests
-npm test             # 67 unit tests
+npm test             # 159 unit tests
 npm run test:watch   # watch mode
 
 # Code quality
@@ -264,7 +264,7 @@ Releases are automated via **GitHub Actions**. To cut a release:
 
 This triggers the **GitHub Actions** release workflow (`.github/workflows/release.yaml`):
 
-1. Build the plugin in a `node:20` container
+1. Build the plugin in a `node:22` container
 2. Update `package.json` and `artifacthub-pkg.yml` with the new version
 3. Package a `.tar.gz` tarball
 4. Compute SHA256 checksum and update `artifacthub-pkg.yml`
@@ -286,7 +286,7 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for:
 ## Links
 
 - **[GitHub Repository](https://github.com/privilegedescalation/headlamp-tns-csi-plugin)** — Source code, issues, releases
-- **[Artifact Hub](https://artifacthub.io/packages/headlamp/headlamp-tns-csi-plugin/headlamp-tns-csi-plugin)** — Plugin catalog listing
+- **[Artifact Hub](https://artifacthub.io/packages/headlamp/tns-csi/headlamp-tns-csi-plugin)** — Plugin catalog listing
 - **[Headlamp](https://headlamp.dev/)** — Kubernetes web UI
 - **[tns-csi driver](https://github.com/fenio/tns-csi)** — TrueNAS CSI driver
 - **[kbench](https://github.com/longhorn/kbench)** — Storage benchmark tool

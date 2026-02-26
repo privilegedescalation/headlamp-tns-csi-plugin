@@ -12,8 +12,8 @@ helm install headlamp headlamp/headlamp \
   --namespace kube-system \
   --create-namespace \
   --set config.pluginsDir=/headlamp/plugins \
-  --set pluginsManager.sources[0].name=headlamp-tns-csi-plugin \
-  --set pluginsManager.sources[0].url=https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+  --set pluginsManager.sources[0].name=tns-csi \
+  --set pluginsManager.sources[0].url=https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
 ```
 
 ## Complete values.yaml Example
@@ -26,8 +26,8 @@ config:
 
 pluginsManager:
   sources:
-    - name: headlamp-tns-csi-plugin
-      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+    - name: tns-csi
+      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
 
 serviceAccount:
   name: headlamp
@@ -80,8 +80,8 @@ spec:
       pluginsDir: /headlamp/plugins
     pluginsManager:
       sources:
-        - name: headlamp-tns-csi-plugin
-          url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.1.0/headlamp-tns-csi-plugin-0.1.0.tar.gz
+        - name: tns-csi
+          url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
 ```
 
 ## RBAC Manifest (Apply Separately)

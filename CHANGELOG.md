@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-02-26
+
+### Added
+
+- **Component tests** — 159 unit tests across 12 test files (up from 67 across 4)
+- **ESLint configuration** — added `.eslintrc.json` so `npm run lint` works
+- **JUnit test reporter** — CI posts test summary directly on PRs via `dorny/test-reporter`
+
+### Changed
+
+- **CI workflow** — split into 4 parallel jobs (lint, typecheck, test, build) with build gating on the other three
+- **Release workflow** — CI gate (`needs: [ci]`) prevents releases when checks fail; concurrency control prevents racing releases
+- **Node.js** — upgraded from 20 to 22 (current LTS) in all workflows
+- **CI scripts** — replaced inline `npx` commands with `npm run` scripts
+- **appVersion tracking** — `artifacthub-pkg.yml` now tracks the latest upstream tns-csi release (0.12.0); release workflow auto-fetches it
+
+### Fixed
+
+- **Conditional hook** — moved `React.useMemo` above early return in OverviewPage to fix `react-hooks/rules-of-hooks` violation
+- **Tarball name** — release workflow now uses correct name `tns-csi-VERSION.tar.gz` (matching package.json `name` field)
+
 ## [0.2.3] - 2026-02-19
 
 ### Changed
@@ -68,7 +89,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TypeScript strict mode with zero `any` types
 - ESLint + Prettier code quality tooling
 
-[Unreleased]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.3...HEAD
+[Unreleased]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.4...HEAD
+[0.2.4]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.0...v0.2.1

@@ -2,7 +2,7 @@
 
 ## Test Suite Overview
 
-The plugin has 67 unit tests across 4 test files:
+The plugin has **159 unit tests** across 12 test files:
 
 | File | Tests | Coverage |
 | ---- | ----- | -------- |
@@ -10,6 +10,14 @@ The plugin has 67 unit tests across 4 test files:
 | `src/api/metrics.test.ts` | Prometheus text format parser | metrics.ts |
 | `src/api/kbench.test.ts` | FIO log parser, manifest builders, format helpers | kbench.ts |
 | `src/api/TnsCsiDataContext.test.tsx` | Context provider integration | TnsCsiDataContext.tsx |
+| `src/components/OverviewPage.test.tsx` | Overview dashboard rendering | OverviewPage.tsx |
+| `src/components/StorageClassesPage.test.tsx` | StorageClass list and detail panel | StorageClassesPage.tsx |
+| `src/components/VolumesPage.test.tsx` | PV list and detail panel | VolumesPage.tsx |
+| `src/components/SnapshotsPage.test.tsx` | VolumeSnapshot list | SnapshotsPage.tsx |
+| `src/components/MetricsPage.test.tsx` | Prometheus metrics display | MetricsPage.tsx |
+| `src/components/BenchmarkPage.test.tsx` | kbench runner UI | BenchmarkPage.tsx |
+| `src/components/DriverStatusCard.test.tsx` | Driver health card | DriverStatusCard.tsx |
+| `src/components/PVCDetailSection.test.tsx` | PVC detail injection | PVCDetailSection.tsx |
 
 ## Running Tests
 
@@ -136,14 +144,6 @@ if (typeof localStorage === 'undefined') {
 
 ## CI Test Enforcement
 
-The GitHub Actions CI workflow runs tests on every push and pull request:
+The GitHub Actions CI workflow runs lint, typecheck, and test as three parallel jobs on every push and PR. A fourth `build` job gates on all three passing. The test job uses a JUnit reporter that posts test summaries directly on PRs.
 
-```yaml
-- name: Run unit tests
-  run: npm test
-
-- name: Type-check
-  run: npx tsc --noEmit
-```
-
-Both must pass for the PR to merge.
+All three checks must pass for the PR to merge.

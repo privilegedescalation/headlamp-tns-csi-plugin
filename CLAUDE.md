@@ -92,7 +92,7 @@ Use `agent-organizer` first when a task is large enough to require multiple agen
 All tests must pass before committing:
 
 ```bash
-npm test        # 67 tests across 4 test files
+npm test        # 159 tests across 12 test files
 npm run tsc     # must exit 0
 ```
 

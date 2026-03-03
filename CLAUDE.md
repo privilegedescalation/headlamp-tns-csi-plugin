@@ -63,36 +63,12 @@ src/
 - Context provider (`TnsCsiDataProvider`) wraps each route component in `index.tsx`
 - Tests: vitest + @testing-library/react, mock with `vi.mock('@kinvolk/headlamp-plugin/lib', ...)`
 
-## Subagent guidance
-
-When launching subagents for tasks in this repo:
-
-- **Research tasks** (reading files, searching code, exploring GitHub): use `subagent_type: Explore`
-  with tools: Read, Glob, Grep, Bash, WebFetch, GitHub MCP
-- **Implementation tasks** (writing/editing files): use `subagent_type: general-purpose`
-- **Debugging**: use `subagent_type: debugger`
-- **Avoid** launching background agents for open-ended research — do research in the main session
-  using Glob, Grep, Read, and GitHub MCP directly, then delegate scoped write tasks to agents
-- The main session has broader tool approvals than subagent sandboxes; use it for exploration
-
-### Local agents (`.claude/agents/`)
-
-Three meta-orchestration agents are installed for this project:
-
-| Agent | Model | Use when |
-|---|---|---|
-| `agent-organizer` | sonnet | Decomposing a large task into subtasks and selecting the right agent for each |
-| `multi-agent-coordinator` | opus | Running multiple concurrent agents that need to share state and synchronize |
-| `agent-installer` | haiku | Browsing or installing additional agents from awesome-claude-code-subagents |
-
-Use `agent-organizer` first when a task is large enough to require multiple agents. It will plan the team composition and hand off to `multi-agent-coordinator` for execution.
-
 ## Testing
 
 All tests must pass before committing:
 
 ```bash
-npm test        # 159 tests across 12 test files
+npm test
 npm run tsc     # must exit 0
 ```
 

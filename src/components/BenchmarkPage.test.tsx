@@ -13,8 +13,8 @@ vi.mock('@kinvolk/headlamp-plugin/lib', () => ({
   },
 }));
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', () =>
-  require('./__mocks__/commonComponents.ts')
+vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
+  await import('./__mocks__/commonComponents')
 );
 
 vi.mock('../api/TnsCsiDataContext');

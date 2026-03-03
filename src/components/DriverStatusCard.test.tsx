@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', () =>
-  require('./__mocks__/commonComponents.ts')
+vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
+  await import('./__mocks__/commonComponents')
 );
 
 import DriverStatusCard from './DriverStatusCard';

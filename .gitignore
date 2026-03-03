@@ -1,5 +1,7 @@
 node_modules/
 dist/
+.headlamp-plugin/
 *.tar.gz
-.claude/settings.json
-.claude/settings.local.json
+.env
+.env.local
+.eslintcache

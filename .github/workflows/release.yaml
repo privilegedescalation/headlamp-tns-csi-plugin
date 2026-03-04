@@ -35,6 +35,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
@@ -60,12 +66,6 @@ jobs:
             sed -i "s|^appVersion:.*|appVersion: \"${APP_VERSION}\"|" artifacthub-pkg.yml
             echo "appVersion set to ${APP_VERSION}"
           fi
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci

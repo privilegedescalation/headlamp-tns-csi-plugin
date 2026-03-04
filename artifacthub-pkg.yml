@@ -64,6 +64,6 @@ changes:
 
 annotations:
   headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.5/tns-csi-0.2.5.tar.gz"
-  headlamp/plugin/archive-checksum: sha256:de0151a2da0b8681af57a2798647b4789b368d489a9eb549087faf88a69a4d89
+  headlamp/plugin/archive-checksum: sha256:3f5812d5081081c43b00f1da2da8de894db0477e765a1c69e55885adad2c0fcb
   headlamp/plugin/version-compat: ">=0.20.0"
   headlamp/plugin/distro-compat: "in-cluster,web,app"

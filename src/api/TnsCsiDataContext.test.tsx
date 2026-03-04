@@ -21,10 +21,14 @@ vi.mock('@kinvolk/headlamp-plugin/lib', () => ({
     },
   },
   ConfigStore: class {
-    get() { return {}; }
+    get() {
+      return {};
+    }
     set() {}
     update() {}
-    useConfig() { return () => ({}); }
+    useConfig() {
+      return () => ({});
+    }
   },
 }));
 

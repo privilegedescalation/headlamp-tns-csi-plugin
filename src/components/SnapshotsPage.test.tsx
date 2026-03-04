@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
-  await import('./__mocks__/commonComponents')
+vi.mock(
+  '@kinvolk/headlamp-plugin/lib/CommonComponents',
+  async () => await import('./__mocks__/commonComponents')
 );
 
 vi.mock('../api/TnsCsiDataContext');
@@ -33,9 +34,7 @@ describe('SnapshotsPage', () => {
     mockContext({ snapshotCrdAvailable: false });
     render(<SnapshotsPage />);
     expect(screen.getByText('Volume Snapshot CRDs Not Installed')).toBeInTheDocument();
-    expect(
-      screen.getByText(/VolumeSnapshot CRDs.*not found/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/VolumeSnapshot CRDs.*not found/)).toBeInTheDocument();
   });
 
   it('shows empty message when snapshots list is empty', () => {

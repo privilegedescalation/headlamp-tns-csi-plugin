@@ -15,7 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import type { TnsCsiPersistentVolume } from '../api/k8s';
-import { findBoundPv, formatAccessModes, formatAge, formatProtocol, phaseToStatus } from '../api/k8s';
+import { formatAccessModes, formatAge, formatProtocol, phaseToStatus } from '../api/k8s';
 
 // ---------------------------------------------------------------------------
 // Detail panel
@@ -47,13 +47,46 @@ function VolumeDetailPanel({ pv, onClose }: VolumeDetailPanelProps) {
         }
       `}</style>
       <div className={drawerClass}>
-        <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ margin: 0, color: 'var(--mui-palette-text-primary)' }}>{pv.metadata.name}</h2>
+        <div
+          style={{
+            marginBottom: '20px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <h2 style={{ margin: 0, color: 'var(--mui-palette-text-primary)' }}>
+            {pv.metadata.name}
+          </h2>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={() => setIsMaximized(!isMaximized)} aria-label={isMaximized ? 'Minimize' : 'Maximize'} style={{ border: 'none', background: 'transparent', fontSize: '20px', cursor: 'pointer', padding: '4px 8px', color: 'var(--mui-palette-text-secondary, #666)', borderRadius: '4px' }}>
+            <button
+              onClick={() => setIsMaximized(!isMaximized)}
+              aria-label={isMaximized ? 'Minimize' : 'Maximize'}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                fontSize: '20px',
+                cursor: 'pointer',
+                padding: '4px 8px',
+                color: 'var(--mui-palette-text-secondary, #666)',
+                borderRadius: '4px',
+              }}
+            >
               {isMaximized ? '⊟' : '⊡'}
             </button>
-            <button onClick={onClose} aria-label="Close panel" style={{ border: 'none', background: 'transparent', fontSize: '24px', cursor: 'pointer', padding: '4px 8px', color: 'var(--mui-palette-text-secondary, #666)', borderRadius: '4px' }}>
+            <button
+              onClick={onClose}
+              aria-label="Close panel"
+              style={{
+                border: 'none',
+                background: 'transparent',
+                fontSize: '24px',
+                cursor: 'pointer',
+                padding: '4px 8px',
+                color: 'var(--mui-palette-text-secondary, #666)',
+                borderRadius: '4px',
+              }}
+            >
               ×
             </button>
           </div>
@@ -98,10 +131,9 @@ function VolumeDetailPanel({ pv, onClose }: VolumeDetailPanelProps) {
               { name: 'Volume Handle', value: csi?.volumeHandle ?? '—' },
               { name: 'Protocol', value: formatProtocol(attrs['protocol']) },
               { name: 'Server', value: attrs['server'] ?? '—' },
-              ...(Object.entries(attrs)
+              ...Object.entries(attrs)
                 .filter(([k]) => !['protocol', 'server'].includes(k))
-                .map(([k, v]) => ({ name: k, value: v ?? '—' }))
-              ),
+                .map(([k, v]) => ({ name: k, value: v ?? '—' })),
             ]}
           />
         </SectionBox>
@@ -110,10 +142,16 @@ function VolumeDetailPanel({ pv, onClose }: VolumeDetailPanelProps) {
         {pv.metadata.annotations?.['tns-csi.io/adoptable'] === 'true' && (
           <SectionBox title="Adoption">
             <NameValueTable
-              rows={[{
-                name: 'Adoptable',
-                value: <StatusLabel status="success">This volume can be adopted cross-cluster</StatusLabel>,
-              }]}
+              rows={[
+                {
+                  name: 'Adoptable',
+                  value: (
+                    <StatusLabel status="success">
+                      This volume can be adopted cross-cluster
+                    </StatusLabel>
+                  ),
+                },
+              ]}
             />
           </SectionBox>
         )}
@@ -129,11 +167,9 @@ function VolumeDetailPanel({ pv, onClose }: VolumeDetailPanelProps) {
 export default function VolumesPage() {
   const location = useLocation();
   const history = useHistory();
-  const { persistentVolumes, persistentVolumeClaims, loading, error } = useTnsCsiContext();
+  const { persistentVolumes, loading, error } = useTnsCsiContext();
 
-  const [selectedName, setSelectedName] = useState<string | null>(
-    location.hash.slice(1) || null
-  );
+  const [selectedName, setSelectedName] = useState<string | null>(location.hash.slice(1) || null);
 
   useEffect(() => {
     setSelectedName(location.hash.slice(1) || null);
@@ -166,7 +202,9 @@ export default function VolumesPage() {
       <>
         <SectionHeader title="TNS-CSI — Volumes" />
         <SectionBox title="Error">
-          <NameValueTable rows={[{ name: 'Status', value: <StatusLabel status="error">{error}</StatusLabel> }]} />
+          <NameValueTable
+            rows={[{ name: 'Status', value: <StatusLabel status="error">{error}</StatusLabel> }]}
+          />
         </SectionBox>
       </>
     );
@@ -187,7 +225,15 @@ export default function VolumesPage() {
               getter: (pv: TnsCsiPersistentVolume) => (
                 <button
                   onClick={() => openVolume(pv.metadata.name)}
-                  style={{ border: 'none', background: 'transparent', color: 'var(--link-color, #1976d2)', cursor: 'pointer', textDecoration: 'underline', padding: 0, font: 'inherit' }}
+                  style={{
+                    border: 'none',
+                    background: 'transparent',
+                    color: 'var(--link-color, #1976d2)',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    padding: 0,
+                    font: 'inherit',
+                  }}
                 >
                   {pv.metadata.name}
                 </button>
@@ -240,7 +286,15 @@ export default function VolumesPage() {
           <div
             onClick={closeVolume}
             aria-label="Close panel backdrop"
-            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1100 }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              zIndex: 1100,
+            }}
           />
           <VolumeDetailPanel pv={selectedPv} onClose={closeVolume} />
         </>

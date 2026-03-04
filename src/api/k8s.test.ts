@@ -28,7 +28,11 @@ function makeSc(name: string, provisioner: string, protocol = 'nfs'): TnsCsiStor
   };
 }
 
-function makePv(name: string, driver: string, claimRef?: { name: string; namespace: string }): TnsCsiPersistentVolume {
+function makePv(
+  name: string,
+  driver: string,
+  claimRef?: { name: string; namespace: string }
+): TnsCsiPersistentVolume {
   return {
     metadata: { name },
     spec: {
@@ -106,10 +110,7 @@ describe('isTnsCsiPersistentVolume', () => {
 
 describe('filterTnsCsiPersistentVolumes', () => {
   it('filters to only tns-csi PVs', () => {
-    const items = [
-      makePv('tns-pv', 'tns.csi.io'),
-      makePv('other-pv', 'ebs.csi.aws.com'),
-    ];
+    const items = [makePv('tns-pv', 'tns.csi.io'), makePv('other-pv', 'ebs.csi.aws.com')];
     const result = filterTnsCsiPersistentVolumes(items);
     expect(result).toHaveLength(1);
     expect(result[0]?.metadata.name).toBe('tns-pv');

@@ -54,7 +54,9 @@ export const sampleCSIDriver: CSIDriver = {
   },
 };
 
-export function makeSampleStorageClass(overrides?: Partial<TnsCsiStorageClass>): TnsCsiStorageClass {
+export function makeSampleStorageClass(
+  overrides?: Partial<TnsCsiStorageClass>
+): TnsCsiStorageClass {
   return {
     metadata: { name: 'tns-nfs', creationTimestamp: '2025-01-01T00:00:00Z' },
     provisioner: 'tns.csi.io',
@@ -101,7 +103,9 @@ export function makeSamplePV(overrides?: Partial<TnsCsiPersistentVolume>): TnsCs
 
 export const samplePV = makeSamplePV();
 
-export function makeSamplePVC(overrides?: Partial<TnsCsiPersistentVolumeClaim>): TnsCsiPersistentVolumeClaim {
+export function makeSamplePVC(
+  overrides?: Partial<TnsCsiPersistentVolumeClaim>
+): TnsCsiPersistentVolumeClaim {
   return {
     metadata: {
       name: 'my-pvc',
@@ -173,7 +177,9 @@ export function makeSampleSnapshot(overrides?: Partial<VolumeSnapshot>): VolumeS
   };
 }
 
-export function makeSampleSnapshotClass(overrides?: Partial<VolumeSnapshotClass>): VolumeSnapshotClass {
+export function makeSampleSnapshotClass(
+  overrides?: Partial<VolumeSnapshotClass>
+): VolumeSnapshotClass {
   return {
     metadata: {
       name: 'tns-snap-class',
@@ -196,9 +202,7 @@ export function makeSampleMetrics(overrides?: Partial<TnsCsiMetrics>): TnsCsiMet
       { labels: { protocol: 'iscsi' }, value: 5 },
     ],
     volumeOperationsDurationSeconds: [],
-    volumeCapacityBytes: [
-      { labels: { volume_id: 'tank/vol-001' }, value: 107374182400 },
-    ],
+    volumeCapacityBytes: [{ labels: { volume_id: 'tank/vol-001' }, value: 107374182400 }],
     csiOperationsTotal: [
       { labels: { method: 'CreateVolume' }, value: 10 },
       { labels: { method: 'DeleteVolume' }, value: 2 },
@@ -207,4 +211,3 @@ export function makeSampleMetrics(overrides?: Partial<TnsCsiMetrics>): TnsCsiMet
     ...overrides,
   };
 }
-

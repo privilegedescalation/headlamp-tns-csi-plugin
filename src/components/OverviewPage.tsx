@@ -122,16 +122,21 @@ export default function OverviewPage() {
     else pvcStatusCounts.Other++;
   }
 
-  const nonBoundPvcs = persistentVolumeClaims.filter(
-    pvc => pvc.status?.phase !== 'Bound'
-  );
+  const nonBoundPvcs = persistentVolumeClaims.filter(pvc => pvc.status?.phase !== 'Bound');
 
   const chartData = protocolChartData(storageClasses);
   const totalScs = storageClasses.length;
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '20px',
+        }}
+      >
         <SectionHeader title="TNS-CSI — Overview" />
         <button
           onClick={refresh}
@@ -174,11 +179,16 @@ export default function OverviewPage() {
             rows={[
               {
                 name: 'Status',
-                value: <StatusLabel status="error">CSIDriver tns.csi.io not found on this cluster</StatusLabel>,
+                value: (
+                  <StatusLabel status="error">
+                    CSIDriver tns.csi.io not found on this cluster
+                  </StatusLabel>
+                ),
               },
               {
                 name: 'Install',
-                value: 'helm install tns-csi oci://registry-1.docker.io/fenio/tns-csi --namespace kube-system',
+                value:
+                  'helm install tns-csi oci://registry-1.docker.io/fenio/tns-csi --namespace kube-system',
               },
             ]}
           />
@@ -223,7 +233,13 @@ export default function OverviewPage() {
       <SectionBox title="Storage Summary">
         {totalScs > 0 && chartData.length > 0 && (
           <div style={{ marginBottom: '16px' }}>
-            <div style={{ marginBottom: '8px', fontSize: '14px', color: 'var(--mui-palette-text-secondary)' }}>
+            <div
+              style={{
+                marginBottom: '8px',
+                fontSize: '14px',
+                color: 'var(--mui-palette-text-secondary)',
+              }}
+            >
               Protocol Distribution
             </div>
             <PercentageBar data={chartData} total={totalScs} />
@@ -239,16 +255,20 @@ export default function OverviewPage() {
               value: <StatusLabel status="success">{pvcStatusCounts.Bound}</StatusLabel>,
             },
             ...(pvcStatusCounts.Pending > 0
-              ? [{
-                  name: 'PVCs (Pending)',
-                  value: <StatusLabel status="warning">{pvcStatusCounts.Pending}</StatusLabel>,
-                }]
+              ? [
+                  {
+                    name: 'PVCs (Pending)',
+                    value: <StatusLabel status="warning">{pvcStatusCounts.Pending}</StatusLabel>,
+                  },
+                ]
               : []),
             ...(pvcStatusCounts.Lost > 0
-              ? [{
-                  name: 'PVCs (Lost)',
-                  value: <StatusLabel status="error">{pvcStatusCounts.Lost}</StatusLabel>,
-                }]
+              ? [
+                  {
+                    name: 'PVCs (Lost)',
+                    value: <StatusLabel status="error">{pvcStatusCounts.Lost}</StatusLabel>,
+                  },
+                ]
               : []),
           ]}
         />
@@ -259,23 +279,21 @@ export default function OverviewPage() {
         <SectionBox title="Pool Capacity">
           <SimpleTable
             columns={[
-              { label: 'Pool', getter: (p) => p.name },
+              { label: 'Pool', getter: p => p.name },
               {
                 label: 'Status',
-                getter: (p) => (
+                getter: p => (
                   <StatusLabel status={p.status === 'ONLINE' ? 'success' : 'warning'}>
                     {p.status}
                   </StatusLabel>
                 ),
               },
-              { label: 'Total', getter: (p) => formatBytes(p.size) },
-              { label: 'Used', getter: (p) => formatBytes(p.allocated) },
-              { label: 'Free', getter: (p) => formatBytes(p.free) },
+              { label: 'Total', getter: p => formatBytes(p.size) },
+              { label: 'Used', getter: p => formatBytes(p.allocated) },
+              { label: 'Free', getter: p => formatBytes(p.free) },
               {
                 label: 'Used %',
-                getter: (p) => p.size > 0
-                  ? `${Math.round((p.allocated / p.size) * 100)}%`
-                  : '—',
+                getter: p => (p.size > 0 ? `${Math.round((p.allocated / p.size) * 100)}%` : '—'),
               },
             ]}
             data={poolStats}
@@ -319,17 +337,17 @@ export default function OverviewPage() {
         <SectionBox title="Attention: Non-Bound PVCs">
           <SimpleTable
             columns={[
-              { label: 'Name', getter: (pvc) => pvc.metadata.name },
-              { label: 'Namespace', getter: (pvc) => pvc.metadata.namespace ?? '—' },
+              { label: 'Name', getter: pvc => pvc.metadata.name },
+              { label: 'Namespace', getter: pvc => pvc.metadata.namespace ?? '—' },
               {
                 label: 'Status',
-                getter: (pvc) => (
+                getter: pvc => (
                   <StatusLabel status={phaseToStatus(pvc.status?.phase)}>
                     {pvc.status?.phase ?? 'Unknown'}
                   </StatusLabel>
                 ),
               },
-              { label: 'Age', getter: (pvc) => formatAge(pvc.metadata.creationTimestamp) },
+              { label: 'Age', getter: pvc => formatAge(pvc.metadata.creationTimestamp) },
             ]}
             data={nonBoundPvcs}
           />
@@ -350,11 +368,16 @@ function parseStorageToBytes(storage: string): number {
   const suffix = match[2] ?? '';
   const multipliers: Record<string, number> = {
     '': 1,
-    K: 1e3, Ki: 1024,
-    M: 1e6, Mi: 1024 ** 2,
-    G: 1e9, Gi: 1024 ** 3,
-    T: 1e12, Ti: 1024 ** 4,
-    P: 1e15, Pi: 1024 ** 5,
+    K: 1e3,
+    Ki: 1024,
+    M: 1e6,
+    Mi: 1024 ** 2,
+    G: 1e9,
+    Gi: 1024 ** 3,
+    T: 1e12,
+    Ti: 1024 ** 4,
+    P: 1e15,
+    Pi: 1024 ** 5,
   };
   return value * (multipliers[suffix] ?? 1);
 }

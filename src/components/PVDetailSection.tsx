@@ -5,10 +5,7 @@
  * Uses registerDetailsViewSection in index.tsx.
  */
 
-import {
-  NameValueTable,
-  SectionBox,
-} from '@kinvolk/headlamp-plugin/lib/CommonComponents';
+import { NameValueTable, SectionBox } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
 import React from 'react';
 import { formatProtocol, TNS_CSI_PROVISIONER } from '../api/k8s';
 

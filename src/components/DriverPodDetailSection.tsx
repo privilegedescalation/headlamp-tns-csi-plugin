@@ -6,10 +6,7 @@
  * Uses registerDetailsViewSection in index.tsx.
  */
 
-import {
-  NameValueTable,
-  SectionBox,
-} from '@kinvolk/headlamp-plugin/lib/CommonComponents';
+import { NameValueTable, SectionBox } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
 import React from 'react';
 import { formatAge, isPodReady, getPodRestarts, TnsCsiPod } from '../api/k8s';
 
@@ -72,12 +69,14 @@ export default function DriverPodDetailSection({ resource }: DriverPodDetailSect
   // Extract from jsonData (KubeObject instance) or fall back to direct props.
   // jsonData.metadata has the full shape including name/namespace; resource.metadata
   // only exposes fields that the Headlamp class getter provides (labels, creationTimestamp).
-  const meta = (resource?.jsonData?.metadata ?? resource?.metadata) as {
-    name?: string;
-    namespace?: string;
-    labels?: Record<string, string>;
-    creationTimestamp?: string;
-  } | undefined;
+  const meta = (resource?.jsonData?.metadata ?? resource?.metadata) as
+    | {
+        name?: string;
+        namespace?: string;
+        labels?: Record<string, string>;
+        creationTimestamp?: string;
+      }
+    | undefined;
   const spec = resource?.jsonData?.spec ?? resource?.spec;
   const status = resource?.jsonData?.status ?? resource?.status;
   const labels = meta?.labels ?? {};
@@ -88,7 +87,8 @@ export default function DriverPodDetailSection({ resource }: DriverPodDetailSect
   }
 
   const component = labels['app.kubernetes.io/component'] ?? 'unknown';
-  const roleLabel = component === 'controller' ? 'Controller' : component === 'node' ? 'Node' : component;
+  const roleLabel =
+    component === 'controller' ? 'Controller' : component === 'node' ? 'Node' : component;
 
   // Build a minimal pod shape that isPodReady / getPodRestarts can consume
   const podShape: TnsCsiPod = {
@@ -113,15 +113,21 @@ export default function DriverPodDetailSection({ resource }: DriverPodDetailSect
   const containerRows = containerStatuses.map(cs => {
     let stateText = 'Unknown';
     if (cs.state?.running) {
-      stateText = `Running since ${cs.state.running.startedAt ? formatAge(cs.state.running.startedAt) : '?'} ago`;
+      stateText = `Running since ${
+        cs.state.running.startedAt ? formatAge(cs.state.running.startedAt) : '?'
+      } ago`;
     } else if (cs.state?.waiting) {
       stateText = `Waiting: ${cs.state.waiting.reason ?? 'unknown'}`;
     } else if (cs.state?.terminated) {
-      stateText = `Terminated (exit ${cs.state.terminated.exitCode ?? '?'}): ${cs.state.terminated.reason ?? ''}`;
+      stateText = `Terminated (exit ${cs.state.terminated.exitCode ?? '?'}): ${
+        cs.state.terminated.reason ?? ''
+      }`;
     }
     return {
       name: cs.name,
-      value: `${cs.ready ? '✓ Ready' : '✗ Not Ready'} — ${stateText} — ${cs.restartCount} restart(s)`,
+      value: `${cs.ready ? '✓ Ready' : '✗ Not Ready'} — ${stateText} — ${
+        cs.restartCount
+      } restart(s)`,
     };
   });
 

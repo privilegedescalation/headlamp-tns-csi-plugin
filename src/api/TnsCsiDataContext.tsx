@@ -109,9 +109,9 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
       try {
         // CSIDriver
         try {
-          const driver = await ApiProxy.request(
+          const driver = (await ApiProxy.request(
             `/apis/storage.k8s.io/v1/csidrivers/${TNS_CSI_PROVISIONER}`
-          ) as CSIDriver;
+          )) as CSIDriver;
           if (!cancelled) setCsiDriver(driver);
         } catch {
           if (!cancelled) setCsiDriver(null);
@@ -203,7 +203,9 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
     }
 
     void fetchAsync();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [refreshKey]);
 
   // ---------------------------------------------------------------------------

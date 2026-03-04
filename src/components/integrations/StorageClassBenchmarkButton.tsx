@@ -22,23 +22,20 @@ interface StorageClassBenchmarkButtonProps {
   };
 }
 
-export default function StorageClassBenchmarkButton({ resource }: StorageClassBenchmarkButtonProps) {
+export default function StorageClassBenchmarkButton({
+  resource,
+}: StorageClassBenchmarkButtonProps) {
   const history = useHistory();
 
   // provisioner is one of the fields Headlamp's StorageClass class exposes as a getter,
   // so it's accessible directly. jsonData fallback for safety.
-  const provisioner =
-    resource?.provisioner ??
-    resource?.jsonData?.provisioner;
+  const provisioner = resource?.provisioner ?? resource?.jsonData?.provisioner;
 
   if (provisioner !== TNS_CSI_PROVISIONER) {
     return null;
   }
 
-  const scName =
-    resource?.metadata?.name ??
-    resource?.jsonData?.metadata?.name ??
-    '';
+  const scName = resource?.metadata?.name ?? resource?.jsonData?.metadata?.name ?? '';
 
   const handleClick = () => {
     // Navigate to benchmark page; user selects the SC in the benchmark form.

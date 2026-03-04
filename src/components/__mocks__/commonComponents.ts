@@ -13,7 +13,9 @@ export const Loader = ({ title }: { title?: string }) =>
   React.createElement('div', { 'data-testid': 'loader' }, title);
 
 export const SectionBox = ({ title, children }: { title?: string; children?: RC }) =>
-  React.createElement('div', { 'data-testid': 'section-box', 'data-title': title },
+  React.createElement(
+    'div',
+    { 'data-testid': 'section-box', 'data-title': title },
     title ? React.createElement('h3', null, title) : null,
     children
   );
@@ -33,15 +35,25 @@ export const SimpleTable = ({
   if (data.length === 0 && emptyMessage) {
     return React.createElement('div', { 'data-testid': 'empty-table' }, emptyMessage);
   }
-  return React.createElement('table', { 'data-testid': 'simple-table' },
-    React.createElement('thead', null,
-      React.createElement('tr', null,
+  return React.createElement(
+    'table',
+    { 'data-testid': 'simple-table' },
+    React.createElement(
+      'thead',
+      null,
+      React.createElement(
+        'tr',
+        null,
         columns.map(col => React.createElement('th', { key: col.label }, col.label))
       )
     ),
-    React.createElement('tbody', null,
+    React.createElement(
+      'tbody',
+      null,
       data.map((item, i) =>
-        React.createElement('tr', { key: i },
+        React.createElement(
+          'tr',
+          { key: i },
           columns.map(col => React.createElement('td', { key: col.label }, col.getter(item)))
         )
       )
@@ -49,15 +61,17 @@ export const SimpleTable = ({
   );
 };
 
-export const NameValueTable = ({
-  rows,
-}: {
-  rows: Array<{ name: string; value: RC }>;
-}) =>
-  React.createElement('table', { 'data-testid': 'name-value-table' },
-    React.createElement('tbody', null,
+export const NameValueTable = ({ rows }: { rows: Array<{ name: string; value: RC }> }) =>
+  React.createElement(
+    'table',
+    { 'data-testid': 'name-value-table' },
+    React.createElement(
+      'tbody',
+      null,
       rows.map(row =>
-        React.createElement('tr', { key: row.name },
+        React.createElement(
+          'tr',
+          { key: row.name },
           React.createElement('td', null, row.name),
           React.createElement('td', null, row.value)
         )
@@ -65,13 +79,7 @@ export const NameValueTable = ({
     )
   );
 
-export const StatusLabel = ({
-  status,
-  children,
-}: {
-  status: string;
-  children?: RC;
-}) =>
+export const StatusLabel = ({ status, children }: { status: string; children?: RC }) =>
   React.createElement('span', { 'data-testid': 'status-label', 'data-status': status }, children);
 
 export const PercentageBar = ({
@@ -80,8 +88,8 @@ export const PercentageBar = ({
   data: Array<{ name: string; value: number }>;
   total: number;
 }) =>
-  React.createElement('div', { 'data-testid': 'percentage-bar' },
-    data.map(d =>
-      React.createElement('span', { key: d.name }, `${d.name}: ${d.value}`)
-    )
+  React.createElement(
+    'div',
+    { 'data-testid': 'percentage-bar' },
+    data.map(d => React.createElement('span', { key: d.name }, `${d.name}: ${d.value}`))
   );

@@ -66,7 +66,12 @@ describe('generatePvcName', () => {
 // ---------------------------------------------------------------------------
 
 describe('buildPvcManifest', () => {
-  const opts = { jobName: 'kbench-test', pvcName: 'kbench-test-pvc', namespace: 'default', storageClass: 'tns-nfs' };
+  const opts = {
+    jobName: 'kbench-test',
+    pvcName: 'kbench-test-pvc',
+    namespace: 'default',
+    storageClass: 'tns-nfs',
+  };
 
   it('produces a valid PVC manifest with correct storage class', () => {
     const manifest = buildPvcManifest(opts) as Record<string, unknown>;
@@ -88,7 +93,12 @@ describe('buildPvcManifest', () => {
 });
 
 describe('buildJobManifest', () => {
-  const opts = { jobName: 'kbench-test', pvcName: 'kbench-test-pvc', namespace: 'default', storageClass: 'tns-nfs' };
+  const opts = {
+    jobName: 'kbench-test',
+    pvcName: 'kbench-test-pvc',
+    namespace: 'default',
+    storageClass: 'tns-nfs',
+  };
 
   it('produces a valid Job manifest', () => {
     const manifest = buildJobManifest(opts) as Record<string, unknown>;
@@ -109,7 +119,10 @@ describe('buildJobManifest', () => {
   });
 
   it('uses custom size and mode when specified', () => {
-    const manifest = buildJobManifest({ ...opts, size: '10G', mode: 'quick' }) as Record<string, unknown>;
+    const manifest = buildJobManifest({ ...opts, size: '10G', mode: 'quick' }) as Record<
+      string,
+      unknown
+    >;
     const spec = manifest['spec'] as Record<string, unknown>;
     const template = spec['template'] as Record<string, unknown>;
     const podSpec = template['spec'] as Record<string, unknown>;

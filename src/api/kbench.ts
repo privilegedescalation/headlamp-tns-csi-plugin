@@ -22,7 +22,7 @@ export interface KbenchMetricGroup {
 export interface KbenchResult {
   iops: KbenchMetricGroup;
   bandwidth: KbenchMetricGroup; // KiB/s
-  latency: KbenchMetricGroup;  // nanoseconds
+  latency: KbenchMetricGroup; // nanoseconds
   metadata: KbenchResultMetadata;
 }
 
@@ -35,7 +35,14 @@ export interface KbenchResultMetadata {
   namespace: string;
 }
 
-export type BenchmarkStatus = 'idle' | 'creating-pvc' | 'waiting-pvc' | 'running' | 'parsing' | 'complete' | 'failed';
+export type BenchmarkStatus =
+  | 'idle'
+  | 'creating-pvc'
+  | 'waiting-pvc'
+  | 'running'
+  | 'parsing'
+  | 'complete'
+  | 'failed';
 
 export type BenchmarkState =
   | { status: 'idle' }
@@ -90,8 +97,8 @@ export interface KbenchJobOptions {
   pvcName: string;
   namespace: string;
   storageClass: string;
-  size?: string;  // default "30G"
-  mode?: string;  // default "full"
+  size?: string; // default "30G"
+  mode?: string; // default "full"
 }
 
 export function buildPvcManifest(opts: KbenchJobOptions): object {
@@ -155,9 +162,7 @@ export function buildJobManifest(opts: KbenchJobOptions): object {
                 { name: 'SIZE', value: opts.size ?? '30G' },
                 { name: 'CPU_IDLE_PROF', value: 'disabled' },
               ],
-              volumeMounts: [
-                { name: 'vol', mountPath: '/volume/' },
-              ],
+              volumeMounts: [{ name: 'vol', mountPath: '/volume/' }],
             },
           ],
           restartPolicy: 'Never',
@@ -212,9 +217,9 @@ export async function getJobPhase(
   jobName: string,
   namespace: string
 ): Promise<{ phase: JobPhase; job: K8sJob }> {
-  const job = await ApiProxy.request(
+  const job = (await ApiProxy.request(
     `/apis/batch/v1/namespaces/${namespace}/jobs/${jobName}`
-  ) as K8sJob;
+  )) as K8sJob;
 
   const status = job.status;
   let phase: JobPhase = 'Unknown';
@@ -225,13 +230,10 @@ export async function getJobPhase(
   return { phase, job };
 }
 
-export async function getPvcPhase(
-  pvcName: string,
-  namespace: string
-): Promise<string> {
-  const pvc = await ApiProxy.request(
+export async function getPvcPhase(pvcName: string, namespace: string): Promise<string> {
+  const pvc = (await ApiProxy.request(
     `/api/v1/namespaces/${namespace}/persistentvolumeclaims/${pvcName}`
-  ) as { status?: { phase?: string } };
+  )) as { status?: { phase?: string } };
   return pvc.status?.phase ?? 'Unknown';
 }
 
@@ -239,24 +241,23 @@ export async function getPvcPhase(
  * Fetches the logs from the kbench pod (via the Job's pod selector).
  * Uses the pod label selector to find the pod.
  */
-export async function fetchKbenchLogs(
-  jobName: string,
-  namespace: string
-): Promise<string> {
+export async function fetchKbenchLogs(jobName: string, namespace: string): Promise<string> {
   // Find pod with label kbench=fio and job-name=<jobName>
-  const podList = await ApiProxy.request(
-    `/api/v1/namespaces/${namespace}/pods?labelSelector=${encodeURIComponent(`job-name=${jobName}`)}`
-  ) as { items?: Array<{ metadata?: { name?: string } }> };
+  const podList = (await ApiProxy.request(
+    `/api/v1/namespaces/${namespace}/pods?labelSelector=${encodeURIComponent(
+      `job-name=${jobName}`
+    )}`
+  )) as { items?: Array<{ metadata?: { name?: string } }> };
 
   const podName = podList.items?.[0]?.metadata?.name;
   if (!podName) {
     throw new Error(`No pod found for kbench job "${jobName}"`);
   }
 
-  const logs = await ApiProxy.request(
+  const logs = (await ApiProxy.request(
     `/api/v1/namespaces/${namespace}/pods/${podName}/log?container=kbench`,
     { isJSON: false }
-  ) as unknown;
+  )) as unknown;
 
   if (typeof logs !== 'string') {
     throw new Error('Pod logs were not returned as text');
@@ -274,10 +275,9 @@ export async function deleteJob(jobName: string, namespace: string): Promise<voi
 }
 
 export async function deletePvc(pvcName: string, namespace: string): Promise<void> {
-  await ApiProxy.request(
-    `/api/v1/namespaces/${namespace}/persistentvolumeclaims/${pvcName}`,
-    { method: 'DELETE' }
-  );
+  await ApiProxy.request(`/api/v1/namespaces/${namespace}/persistentvolumeclaims/${pvcName}`, {
+    method: 'DELETE',
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -366,7 +366,7 @@ export function parseKbenchLog(logText: string): KbenchResult | null {
     bandwidth,
     latency,
     metadata: {
-      storageClass: '',  // filled in by the caller
+      storageClass: '', // filled in by the caller
       size: '30G',
       startedAt: '',
       completedAt: new Date().toISOString(),
@@ -388,9 +388,14 @@ export async function listKbenchJobs(namespace: string = ''): Promise<KbenchJobS
     ? `/apis/batch/v1/namespaces/${namespace}/jobs?labelSelector=${selector}`
     : `/apis/batch/v1/jobs?labelSelector=${selector}`;
 
-  const list = await ApiProxy.request(path) as {
+  const list = (await ApiProxy.request(path)) as {
     items?: Array<{
-      metadata?: { name?: string; namespace?: string; annotations?: Record<string, string>; creationTimestamp?: string };
+      metadata?: {
+        name?: string;
+        namespace?: string;
+        annotations?: Record<string, string>;
+        creationTimestamp?: string;
+      };
       status?: K8sJobStatus;
     }>;
   };

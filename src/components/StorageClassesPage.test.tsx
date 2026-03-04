@@ -1,8 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
-  await import('./__mocks__/commonComponents')
+vi.mock(
+  '@kinvolk/headlamp-plugin/lib/CommonComponents',
+  async () => await import('./__mocks__/commonComponents')
 );
 
 let mockHash = '';
@@ -109,7 +110,9 @@ describe('StorageClassesPage', () => {
 
   it('shows NFS protocol notes in detail panel', () => {
     mockHash = '#tns-nfs';
-    const sc = makeSampleStorageClass({ parameters: { protocol: 'nfs', pool: 'tank', server: '10.0.0.1' } });
+    const sc = makeSampleStorageClass({
+      parameters: { protocol: 'nfs', pool: 'tank', server: '10.0.0.1' },
+    });
     mockContext({ storageClasses: [sc], persistentVolumes: [] });
     render(<StorageClassesPage />);
     expect(screen.getByText('Protocol Notes')).toBeInTheDocument();

@@ -1,12 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
-  await import('./__mocks__/commonComponents')
+vi.mock(
+  '@kinvolk/headlamp-plugin/lib/CommonComponents',
+  async () => await import('./__mocks__/commonComponents')
 );
 
 vi.mock('../api/TnsCsiDataContext');
-vi.mock('../api/metrics', async (importOriginal) => {
+vi.mock('../api/metrics', async importOriginal => {
   const actual = await importOriginal<typeof import('../api/metrics')>();
   return {
     ...actual,
@@ -132,9 +133,7 @@ describe('OverviewPage', () => {
       persistentVolumeClaims: [],
       controllerPods: [makeSamplePod()],
       nodePods: [makeSamplePod({ name: 'node-1' })],
-      poolStats: [
-        { name: 'tank', status: 'ONLINE', size: 1e12, allocated: 5e11, free: 5e11 },
-      ],
+      poolStats: [{ name: 'tank', status: 'ONLINE', size: 1e12, allocated: 5e11, free: 5e11 }],
     });
     render(<OverviewPage />);
     expect(screen.getByText('Pool Capacity')).toBeInTheDocument();
@@ -163,9 +162,7 @@ describe('OverviewPage', () => {
     const pod = makeSamplePod();
     const pv = makeSamplePV();
     const metrics = makeSampleMetrics({
-      volumeCapacityBytes: [
-        { labels: { volume_id: 'tank/vol-001' }, value: 107374182400 },
-      ],
+      volumeCapacityBytes: [{ labels: { volume_id: 'tank/vol-001' }, value: 107374182400 }],
     });
     mockContext({
       driverInstalled: true,
@@ -187,7 +184,11 @@ describe('OverviewPage', () => {
 
   it('renders non-bound PVCs table', () => {
     const pendingPvc = makeSamplePVC({
-      metadata: { name: 'pending-pvc', namespace: 'test', creationTimestamp: '2025-01-01T00:00:00Z' },
+      metadata: {
+        name: 'pending-pvc',
+        namespace: 'test',
+        creationTimestamp: '2025-01-01T00:00:00Z',
+      },
       status: { phase: 'Pending' },
     });
     mockContext({
@@ -257,9 +258,18 @@ describe('OverviewPage', () => {
   });
 
   it('shows PVC status breakdown with Pending and Lost counts', () => {
-    const boundPvc = makeSamplePVC({ metadata: { name: 'pvc-1', namespace: 'ns' }, status: { phase: 'Bound' } });
-    const pendingPvc = makeSamplePVC({ metadata: { name: 'pvc-2', namespace: 'ns' }, status: { phase: 'Pending' } });
-    const lostPvc = makeSamplePVC({ metadata: { name: 'pvc-3', namespace: 'ns' }, status: { phase: 'Lost' } });
+    const boundPvc = makeSamplePVC({
+      metadata: { name: 'pvc-1', namespace: 'ns' },
+      status: { phase: 'Bound' },
+    });
+    const pendingPvc = makeSamplePVC({
+      metadata: { name: 'pvc-2', namespace: 'ns' },
+      status: { phase: 'Pending' },
+    });
+    const lostPvc = makeSamplePVC({
+      metadata: { name: 'pvc-3', namespace: 'ns' },
+      status: { phase: 'Lost' },
+    });
     mockContext({
       driverInstalled: true,
       csiDriver: sampleCSIDriver,

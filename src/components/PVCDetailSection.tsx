@@ -5,10 +5,7 @@
  * Uses registerDetailsViewSection in index.tsx.
  */
 
-import {
-  NameValueTable,
-  SectionBox,
-} from '@kinvolk/headlamp-plugin/lib/CommonComponents';
+import { NameValueTable, SectionBox } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
 import React from 'react';
 import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import { findBoundPv, formatProtocol } from '../api/k8s';
@@ -52,10 +49,9 @@ export default function PVCDetailSection({ resource }: PVCDetailSectionProps) {
           { name: 'Server', value: attrs['server'] ?? '—' },
           { name: 'Storage Class', value: boundPv.spec.storageClassName ?? '—' },
           { name: 'Volume Handle', value: boundPv.spec.csi?.volumeHandle ?? '—' },
-          ...(Object.entries(attrs)
+          ...Object.entries(attrs)
             .filter(([k]) => !['protocol', 'server'].includes(k))
-            .map(([k, v]) => ({ name: k, value: v ?? '—' }))
-          ),
+            .map(([k, v]) => ({ name: k, value: v ?? '—' })),
           {
             name: 'PV Name',
             value: boundPv.metadata.name,

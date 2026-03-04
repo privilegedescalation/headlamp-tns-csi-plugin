@@ -50,16 +50,14 @@ export function buildStorageClassColumns() {
       label: 'Protocol',
       getValue: (sc: unknown): string | null => {
         const provisioner =
-          getField(sc, 'provisioner') ??
-          (sc as Record<string, unknown>)?.['provisioner'];
+          getField(sc, 'provisioner') ?? (sc as Record<string, unknown>)?.['provisioner'];
         if (provisioner !== TNS_CSI_PROVISIONER) return null;
         const p = getField(sc, 'parameters', 'protocol');
         return typeof p === 'string' ? formatProtocol(p) : null;
       },
       render: (sc: unknown) => {
         const provisioner =
-          getField(sc, 'provisioner') ??
-          (sc as Record<string, unknown>)?.['provisioner'];
+          getField(sc, 'provisioner') ?? (sc as Record<string, unknown>)?.['provisioner'];
         if (provisioner !== TNS_CSI_PROVISIONER) return <span>—</span>;
         const protocol = getField(sc, 'parameters', 'protocol') as string | undefined;
         return <span>{formatProtocol(protocol)}</span>;
@@ -69,16 +67,14 @@ export function buildStorageClassColumns() {
       label: 'Pool',
       getValue: (sc: unknown): string | null => {
         const provisioner =
-          getField(sc, 'provisioner') ??
-          (sc as Record<string, unknown>)?.['provisioner'];
+          getField(sc, 'provisioner') ?? (sc as Record<string, unknown>)?.['provisioner'];
         if (provisioner !== TNS_CSI_PROVISIONER) return null;
         const p = getField(sc, 'parameters', 'pool');
         return typeof p === 'string' ? p : null;
       },
       render: (sc: unknown) => {
         const provisioner =
-          getField(sc, 'provisioner') ??
-          (sc as Record<string, unknown>)?.['provisioner'];
+          getField(sc, 'provisioner') ?? (sc as Record<string, unknown>)?.['provisioner'];
         if (provisioner !== TNS_CSI_PROVISIONER) return <span>—</span>;
         const pool = getField(sc, 'parameters', 'pool') as string | undefined;
         return <span>{pool ?? '—'}</span>;
@@ -88,16 +84,14 @@ export function buildStorageClassColumns() {
       label: 'Server',
       getValue: (sc: unknown): string | null => {
         const provisioner =
-          getField(sc, 'provisioner') ??
-          (sc as Record<string, unknown>)?.['provisioner'];
+          getField(sc, 'provisioner') ?? (sc as Record<string, unknown>)?.['provisioner'];
         if (provisioner !== TNS_CSI_PROVISIONER) return null;
         const p = getField(sc, 'parameters', 'server');
         return typeof p === 'string' ? p : null;
       },
       render: (sc: unknown) => {
         const provisioner =
-          getField(sc, 'provisioner') ??
-          (sc as Record<string, unknown>)?.['provisioner'];
+          getField(sc, 'provisioner') ?? (sc as Record<string, unknown>)?.['provisioner'];
         if (provisioner !== TNS_CSI_PROVISIONER) return <span>—</span>;
         const server = getField(sc, 'parameters', 'server') as string | undefined;
         return <span>{server ?? '—'}</span>;
@@ -127,7 +121,9 @@ export function buildPVColumns() {
       render: (pv: unknown) => {
         const driver = getField(pv, 'spec', 'csi', 'driver') as string | undefined;
         if (driver !== TNS_CSI_PROVISIONER) return <span>—</span>;
-        const protocol = getField(pv, 'spec', 'csi', 'volumeAttributes', 'protocol') as string | undefined;
+        const protocol = getField(pv, 'spec', 'csi', 'volumeAttributes', 'protocol') as
+          | string
+          | undefined;
         return <span>{formatProtocol(protocol)}</span>;
       },
     },
@@ -144,7 +140,9 @@ export function buildPVColumns() {
       render: (pv: unknown) => {
         const driver = getField(pv, 'spec', 'csi', 'driver') as string | undefined;
         if (driver !== TNS_CSI_PROVISIONER) return <span>—</span>;
-        const dataset = getField(pv, 'spec', 'csi', 'volumeAttributes', 'datasetName') as string | undefined;
+        const dataset = getField(pv, 'spec', 'csi', 'volumeAttributes', 'datasetName') as
+          | string
+          | undefined;
         const pool = dataset?.split('/')[0];
         return <span>{pool ?? '—'}</span>;
       },

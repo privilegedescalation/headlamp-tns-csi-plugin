@@ -218,10 +218,7 @@ export function sumSamples(samples: MetricSample[]): number {
 }
 
 /** Group samples by a label key, summing values per group. */
-export function groupByLabel(
-  samples: MetricSample[],
-  labelKey: string
-): Map<string, number> {
+export function groupByLabel(samples: MetricSample[], labelKey: string): Map<string, number> {
   const result = new Map<string, number>();
   for (const sample of samples) {
     const key = sample.labels[labelKey] ?? 'unknown';

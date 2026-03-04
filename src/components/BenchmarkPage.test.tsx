@@ -6,19 +6,24 @@ vi.mock('@kinvolk/headlamp-plugin/lib', () => ({
     request: vi.fn().mockResolvedValue({}),
   },
   ConfigStore: class {
-    get() { return {}; }
+    get() {
+      return {};
+    }
     set() {}
     update() {}
-    useConfig() { return () => ({}); }
+    useConfig() {
+      return () => ({});
+    }
   },
 }));
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
-  await import('./__mocks__/commonComponents')
+vi.mock(
+  '@kinvolk/headlamp-plugin/lib/CommonComponents',
+  async () => await import('./__mocks__/commonComponents')
 );
 
 vi.mock('../api/TnsCsiDataContext');
-vi.mock('../api/kbench', async (importOriginal) => {
+vi.mock('../api/kbench', async importOriginal => {
   const actual = await importOriginal<typeof import('../api/kbench')>();
   return {
     ...actual,
@@ -36,16 +41,7 @@ vi.mock('../api/kbench', async (importOriginal) => {
 
 import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import { ApiProxy } from '@kinvolk/headlamp-plugin/lib';
-import {
-  createPvc,
-  createJob,
-  deleteJob,
-  deletePvc,
-  getJobPhase,
-  fetchKbenchLogs,
-  listKbenchJobs,
-  parseKbenchLog,
-} from '../api/kbench';
+import { createPvc, createJob, listKbenchJobs } from '../api/kbench';
 import { defaultContext, makeSampleStorageClass } from '../test-helpers';
 import BenchmarkPage from './BenchmarkPage';
 
@@ -192,7 +188,9 @@ describe('BenchmarkPage', () => {
     render(<BenchmarkPage />);
 
     // Change namespace
-    const nsInput = screen.getByLabelText('Kubernetes namespace for benchmark job') as HTMLInputElement;
+    const nsInput = screen.getByLabelText(
+      'Kubernetes namespace for benchmark job'
+    ) as HTMLInputElement;
     fireEvent.change(nsInput, { target: { value: 'bench-ns' } });
 
     fireEvent.click(screen.getByLabelText('Start kbench storage benchmark'));

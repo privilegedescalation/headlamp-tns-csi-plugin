@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
-  await import('./__mocks__/commonComponents')
+vi.mock(
+  '@kinvolk/headlamp-plugin/lib/CommonComponents',
+  async () => await import('./__mocks__/commonComponents')
 );
 
 vi.mock('../api/TnsCsiDataContext');
@@ -51,9 +52,7 @@ describe('PVCDetailSection', () => {
       persistentVolumeClaims: [pvc],
       persistentVolumes: [pv],
     });
-    render(
-      <PVCDetailSection resource={{ metadata: { name: 'my-pvc', namespace: 'default' } }} />
-    );
+    render(<PVCDetailSection resource={{ metadata: { name: 'my-pvc', namespace: 'default' } }} />);
     expect(screen.getByText('TNS-CSI Storage Details')).toBeInTheDocument();
     expect(screen.getByText('tns.csi.io')).toBeInTheDocument();
     expect(screen.getByText('NFS')).toBeInTheDocument();
@@ -83,9 +82,7 @@ describe('PVCDetailSection', () => {
       persistentVolumeClaims: [pvc],
       persistentVolumes: [pv],
     });
-    render(
-      <PVCDetailSection resource={{ metadata: { name: 'my-pvc', namespace: 'default' } }} />
-    );
+    render(<PVCDetailSection resource={{ metadata: { name: 'my-pvc', namespace: 'default' } }} />);
     expect(screen.getByText('pool')).toBeInTheDocument();
     expect(screen.getByText('tank')).toBeInTheDocument();
     expect(screen.getByText('customAttr')).toBeInTheDocument();

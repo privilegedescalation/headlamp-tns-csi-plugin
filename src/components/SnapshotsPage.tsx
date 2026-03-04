@@ -27,7 +27,9 @@ export default function SnapshotsPage() {
       <>
         <SectionHeader title="TNS-CSI — Snapshots" />
         <SectionBox title="Error">
-          <NameValueTable rows={[{ name: 'Status', value: <StatusLabel status="error">{error}</StatusLabel> }]} />
+          <NameValueTable
+            rows={[{ name: 'Status', value: <StatusLabel status="error">{error}</StatusLabel> }]}
+          />
         </SectionBox>
       </>
     );
@@ -51,7 +53,11 @@ export default function SnapshotsPage() {
               {
                 name: 'Documentation',
                 value: (
-                  <a href="https://github.com/fenio/tns-csi" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="https://github.com/fenio/tns-csi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     See tns-csi documentation for snapshot setup instructions
                   </a>
                 ),
@@ -71,10 +77,10 @@ export default function SnapshotsPage() {
         <SectionBox title={`Snapshot Classes (${volumeSnapshotClasses.length})`}>
           <SimpleTable
             columns={[
-              { label: 'Name', getter: (vsc) => vsc.metadata.name },
-              { label: 'Driver', getter: (vsc) => vsc.driver ?? '—' },
-              { label: 'Deletion Policy', getter: (vsc) => vsc.deletionPolicy ?? '—' },
-              { label: 'Age', getter: (vsc) => formatAge(vsc.metadata.creationTimestamp) },
+              { label: 'Name', getter: vsc => vsc.metadata.name },
+              { label: 'Driver', getter: vsc => vsc.driver ?? '—' },
+              { label: 'Deletion Policy', getter: vsc => vsc.deletionPolicy ?? '—' },
+              { label: 'Age', getter: vsc => formatAge(vsc.metadata.creationTimestamp) },
             ]}
             data={volumeSnapshotClasses}
           />

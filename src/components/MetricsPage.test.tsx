@@ -1,12 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
-  await import('./__mocks__/commonComponents')
+vi.mock(
+  '@kinvolk/headlamp-plugin/lib/CommonComponents',
+  async () => await import('./__mocks__/commonComponents')
 );
 
 vi.mock('../api/TnsCsiDataContext');
-vi.mock('../api/metrics', async (importOriginal) => {
+vi.mock('../api/metrics', async importOriginal => {
   const actual = await importOriginal<typeof import('../api/metrics')>();
   return {
     ...actual,

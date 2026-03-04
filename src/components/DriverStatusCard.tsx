@@ -38,11 +38,7 @@ function WebSocketStatus({ metrics }: { metrics: TnsCsiMetrics | null }) {
 function PodStatusBadge({ pod }: { pod: TnsCsiPod }) {
   const ready = isPodReady(pod);
   const phase = pod.status?.phase ?? 'Unknown';
-  return (
-    <StatusLabel status={ready ? 'success' : 'error'}>
-      {phase}
-    </StatusLabel>
-  );
+  return <StatusLabel status={ready ? 'success' : 'error'}>{phase}</StatusLabel>;
 }
 
 function PodRow({ pod }: { pod: TnsCsiPod }) {
@@ -114,7 +110,8 @@ export default function DriverStatusCard({
               name: 'WebSocket',
               value: <WebSocketStatus metrics={metrics ?? null} />,
             },
-            ...(metrics?.websocketReconnectsTotal !== null && metrics?.websocketReconnectsTotal !== undefined
+            ...(metrics?.websocketReconnectsTotal !== null &&
+            metrics?.websocketReconnectsTotal !== undefined
               ? [{ name: 'WS Reconnects', value: String(metrics.websocketReconnectsTotal) }]
               : []),
           ]}
@@ -153,7 +150,12 @@ export default function DriverStatusCard({
       {controllerPods.length === 0 && (
         <SectionBox title="Controller Pods">
           <NameValueTable
-            rows={[{ name: 'Status', value: <StatusLabel status="error">No controller pod found</StatusLabel> }]}
+            rows={[
+              {
+                name: 'Status',
+                value: <StatusLabel status="error">No controller pod found</StatusLabel>,
+              },
+            ]}
           />
         </SectionBox>
       )}
@@ -169,7 +171,12 @@ export default function DriverStatusCard({
       {nodePods.length === 0 && (
         <SectionBox title="Node Pods">
           <NameValueTable
-            rows={[{ name: 'Status', value: <StatusLabel status="error">No node pods found</StatusLabel> }]}
+            rows={[
+              {
+                name: 'Status',
+                value: <StatusLabel status="error">No node pods found</StatusLabel>,
+              },
+            ]}
           />
         </SectionBox>
       )}

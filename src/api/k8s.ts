@@ -165,9 +165,7 @@ export function findBoundPv(
 ): TnsCsiPersistentVolume | undefined {
   const ns = pvc.metadata.namespace ?? '';
   const name = pvc.metadata.name;
-  return tnsPvs.find(
-    pv => pv.spec.claimRef?.namespace === ns && pv.spec.claimRef?.name === name
-  );
+  return tnsPvs.find(pv => pv.spec.claimRef?.namespace === ns && pv.spec.claimRef?.name === name);
 }
 
 // ---------------------------------------------------------------------------
@@ -216,15 +214,11 @@ export interface TnsCsiPod extends KubeObject {
 }
 
 export function isPodReady(pod: TnsCsiPod): boolean {
-  return (
-    pod.status?.conditions?.some(c => c.type === 'Ready' && c.status === 'True') ?? false
-  );
+  return pod.status?.conditions?.some(c => c.type === 'Ready' && c.status === 'True') ?? false;
 }
 
 export function getPodRestarts(pod: TnsCsiPod): number {
-  return (
-    pod.status?.containerStatuses?.reduce((sum, c) => sum + c.restartCount, 0) ?? 0
-  );
+  return pod.status?.containerStatuses?.reduce((sum, c) => sum + c.restartCount, 0) ?? 0;
 }
 
 export function getPodImage(pod: TnsCsiPod): string {
@@ -267,7 +261,9 @@ export function filterTnsCsiVolumeSnapshots(
   tnsCsiSnapshotClassNames: Set<string>
 ): VolumeSnapshot[] {
   return snapshots.filter(
-    s => s.spec?.volumeSnapshotClassName && tnsCsiSnapshotClassNames.has(s.spec.volumeSnapshotClassName)
+    s =>
+      s.spec?.volumeSnapshotClassName &&
+      tnsCsiSnapshotClassNames.has(s.spec.volumeSnapshotClassName)
   );
 }
 

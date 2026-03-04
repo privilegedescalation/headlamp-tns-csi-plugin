@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@kinvolk/headlamp-plugin/lib/CommonComponents', async () =>
-  await import('./__mocks__/commonComponents')
+vi.mock(
+  '@kinvolk/headlamp-plugin/lib/CommonComponents',
+  async () => await import('./__mocks__/commonComponents')
 );
 
 import DriverStatusCard from './DriverStatusCard';
@@ -10,24 +11,12 @@ import { makeSamplePod, sampleCSIDriver, makeSampleMetrics } from '../test-helpe
 
 describe('DriverStatusCard', () => {
   it('shows "Not detected" when no CSI driver is present', () => {
-    render(
-      <DriverStatusCard
-        csiDriver={null}
-        controllerPods={[]}
-        nodePods={[]}
-      />
-    );
+    render(<DriverStatusCard csiDriver={null} controllerPods={[]} nodePods={[]} />);
     expect(screen.getByText('Not detected')).toBeInTheDocument();
   });
 
   it('shows "Degraded" when no pods are present', () => {
-    render(
-      <DriverStatusCard
-        csiDriver={sampleCSIDriver}
-        controllerPods={[]}
-        nodePods={[]}
-      />
-    );
+    render(<DriverStatusCard csiDriver={sampleCSIDriver} controllerPods={[]} nodePods={[]} />);
     expect(screen.getByText('Degraded')).toBeInTheDocument();
   });
 
@@ -84,27 +73,15 @@ describe('DriverStatusCard', () => {
   });
 
   it('renders CSI capabilities section when driver is present', () => {
-    render(
-      <DriverStatusCard
-        csiDriver={sampleCSIDriver}
-        controllerPods={[]}
-        nodePods={[]}
-      />
-    );
+    render(<DriverStatusCard csiDriver={sampleCSIDriver} controllerPods={[]} nodePods={[]} />);
     expect(screen.getByText('CSI Driver Capabilities')).toBeInTheDocument();
     expect(screen.getByText('false')).toBeInTheDocument(); // attachRequired
-    expect(screen.getByText('true')).toBeInTheDocument();  // podInfoOnMount
+    expect(screen.getByText('true')).toBeInTheDocument(); // podInfoOnMount
     expect(screen.getByText('Persistent')).toBeInTheDocument();
   });
 
   it('does not render CSI capabilities when no driver', () => {
-    render(
-      <DriverStatusCard
-        csiDriver={null}
-        controllerPods={[]}
-        nodePods={[]}
-      />
-    );
+    render(<DriverStatusCard csiDriver={null} controllerPods={[]} nodePods={[]} />);
     expect(screen.queryByText('CSI Driver Capabilities')).not.toBeInTheDocument();
   });
 
@@ -119,13 +96,7 @@ describe('DriverStatusCard', () => {
         ],
       },
     });
-    render(
-      <DriverStatusCard
-        csiDriver={sampleCSIDriver}
-        controllerPods={[pod]}
-        nodePods={[]}
-      />
-    );
+    render(<DriverStatusCard csiDriver={sampleCSIDriver} controllerPods={[pod]} nodePods={[]} />);
     expect(screen.getByText('ctrl-pod-1')).toBeInTheDocument();
     expect(screen.getByText('fenio/tns-csi:v0.6.0')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument(); // restarts

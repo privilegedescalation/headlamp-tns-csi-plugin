@@ -40,7 +40,9 @@ function WebSocketCard({ metrics }: { metrics: TnsCsiMetrics }) {
           {
             name: 'Connection Status',
             value: (
-              <StatusLabel status={connected === 1 ? 'success' : connected === 0 ? 'error' : 'warning'}>
+              <StatusLabel
+                status={connected === 1 ? 'success' : connected === 0 ? 'error' : 'warning'}
+              >
                 {connected === 1 ? 'Connected' : connected === 0 ? 'Disconnected' : 'Unknown'}
               </StatusLabel>
             ),
@@ -137,7 +139,14 @@ export default function MetricsPage() {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '20px',
+        }}
+      >
         <SectionHeader title="TNS-CSI — Metrics" />
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
           {lastUpdated && (
@@ -169,7 +178,14 @@ export default function MetricsPage() {
       {!driverInstalled && (
         <SectionBox title="Driver Not Detected">
           <NameValueTable
-            rows={[{ name: 'Status', value: <StatusLabel status="error">TNS-CSI driver not found on this cluster</StatusLabel> }]}
+            rows={[
+              {
+                name: 'Status',
+                value: (
+                  <StatusLabel status="error">TNS-CSI driver not found on this cluster</StatusLabel>
+                ),
+              },
+            ]}
           />
         </SectionBox>
       )}
@@ -178,11 +194,18 @@ export default function MetricsPage() {
         <SectionBox title="Metrics Unavailable">
           <NameValueTable
             rows={[
-              { name: 'Status', value: <StatusLabel status="warning">No controller pod found</StatusLabel> },
-              { name: 'Note', value: 'Ensure controller pod is running with metrics enabled on port 8080.' },
+              {
+                name: 'Status',
+                value: <StatusLabel status="warning">No controller pod found</StatusLabel>,
+              },
+              {
+                name: 'Note',
+                value: 'Ensure controller pod is running with metrics enabled on port 8080.',
+              },
               {
                 name: 'Troubleshooting',
-                value: 'kubectl logs -n kube-system -l app.kubernetes.io/name=tns-csi-driver,app.kubernetes.io/component=controller',
+                value:
+                  'kubectl logs -n kube-system -l app.kubernetes.io/name=tns-csi-driver,app.kubernetes.io/component=controller',
               },
             ]}
           />
@@ -194,7 +217,11 @@ export default function MetricsPage() {
           <NameValueTable
             rows={[
               { name: 'Error', value: <StatusLabel status="error">{metricsError}</StatusLabel> },
-              { name: 'Note', value: 'Metrics are fetched via Kubernetes API proxy to the controller pod port 8080.' },
+              {
+                name: 'Note',
+                value:
+                  'Metrics are fetched via Kubernetes API proxy to the controller pod port 8080.',
+              },
             ]}
           />
         </SectionBox>

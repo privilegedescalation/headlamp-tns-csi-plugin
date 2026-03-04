@@ -70,10 +70,7 @@ export interface PoolStats {
  * @param apiKey - TrueNAS API key
  * @returns Array of pool stats
  */
-export function fetchTruenasPoolStats(
-  server: string,
-  apiKey: string
-): Promise<PoolStats[]> {
+export function fetchTruenasPoolStats(server: string, apiKey: string): Promise<PoolStats[]> {
   return new Promise((resolve, reject) => {
     // TrueNAS WebSocket endpoint — supports both SCALE and CORE
     const url = `wss://${server}/api/current`;
@@ -99,12 +96,14 @@ export function fetchTruenasPoolStats(
 
     ws.onopen = () => {
       phase = 'authenticating';
-      ws.send(JSON.stringify({
-        id: msgId++,
-        msg: 'method',
-        method: 'auth.login_with_api_key',
-        params: [apiKey],
-      }));
+      ws.send(
+        JSON.stringify({
+          id: msgId++,
+          msg: 'method',
+          method: 'auth.login_with_api_key',
+          params: [apiKey],
+        })
+      );
     };
 
     ws.onmessage = (event: MessageEvent) => {
@@ -124,12 +123,14 @@ export function fetchTruenasPoolStats(
           return;
         }
         phase = 'querying';
-        ws.send(JSON.stringify({
-          id: msgId++,
-          msg: 'method',
-          method: 'pool.query',
-          params: [],
-        }));
+        ws.send(
+          JSON.stringify({
+            id: msgId++,
+            msg: 'method',
+            method: 'pool.query',
+            params: [],
+          })
+        );
         return;
       }
 
@@ -162,7 +163,11 @@ export function fetchTruenasPoolStats(
     ws.onerror = () => {
       if (phase !== 'done') {
         clearTimeout(timeout);
-        reject(new Error(`WebSocket error connecting to ${server} — check the server address and that TrueNAS is reachable`));
+        reject(
+          new Error(
+            `WebSocket error connecting to ${server} — check the server address and that TrueNAS is reachable`
+          )
+        );
       }
     };
 

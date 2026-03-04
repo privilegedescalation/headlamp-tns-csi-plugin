@@ -119,8 +119,8 @@ export default function TnsCsiSettings({ data, onDataChange }: PluginSettingsPro
                   autoComplete="off"
                 />
                 <div style={HINT_STYLE}>
-                  Generate in TrueNAS UI → Credentials → API Keys.
-                  Required for real pool capacity data on the Overview page.
+                  Generate in TrueNAS UI → Credentials → API Keys. Required for real pool capacity
+                  data on the Overview page.
                 </div>
               </div>
             ),
@@ -137,8 +137,8 @@ export default function TnsCsiSettings({ data, onDataChange }: PluginSettingsPro
                   style={INPUT_STYLE}
                 />
                 <div style={HINT_STYLE}>
-                  TrueNAS host/IP. If blank, the plugin uses the{' '}
-                  <code>server</code> parameter from your tns-csi StorageClass.
+                  TrueNAS host/IP. If blank, the plugin uses the <code>server</code> parameter from
+                  your tns-csi StorageClass.
                 </div>
               </div>
             ),

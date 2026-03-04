@@ -55,7 +55,14 @@ function StorageClassDetailPanel({ sc, pvCount, onClose }: StorageClassDetailPan
         }
       `}</style>
       <div className={drawerClass}>
-        <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          style={{
+            marginBottom: '20px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <h2 style={{ margin: 0, color: 'var(--mui-palette-text-primary)' }}>
             {sc.metadata.name}
           </h2>
@@ -64,7 +71,15 @@ function StorageClassDetailPanel({ sc, pvCount, onClose }: StorageClassDetailPan
               onClick={() => setIsMaximized(!isMaximized)}
               aria-label={isMaximized ? 'Minimize panel' : 'Maximize panel'}
               title={isMaximized ? 'Minimize' : 'Maximize'}
-              style={{ border: 'none', background: 'transparent', fontSize: '20px', cursor: 'pointer', padding: '4px 8px', color: 'var(--mui-palette-text-secondary, #666)', borderRadius: '4px' }}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                fontSize: '20px',
+                cursor: 'pointer',
+                padding: '4px 8px',
+                color: 'var(--mui-palette-text-secondary, #666)',
+                borderRadius: '4px',
+              }}
             >
               {isMaximized ? '⊟' : '⊡'}
             </button>
@@ -72,7 +87,15 @@ function StorageClassDetailPanel({ sc, pvCount, onClose }: StorageClassDetailPan
               onClick={onClose}
               aria-label="Close panel"
               title="Close"
-              style={{ border: 'none', background: 'transparent', fontSize: '24px', cursor: 'pointer', padding: '4px 8px', color: 'var(--mui-palette-text-secondary, #666)', borderRadius: '4px' }}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                fontSize: '24px',
+                cursor: 'pointer',
+                padding: '4px 8px',
+                color: 'var(--mui-palette-text-secondary, #666)',
+                borderRadius: '4px',
+              }}
             >
               ×
             </button>
@@ -90,16 +113,21 @@ function StorageClassDetailPanel({ sc, pvCount, onClose }: StorageClassDetailPan
               { name: 'Volume Binding Mode', value: sc.volumeBindingMode ?? '—' },
               {
                 name: 'Allow Volume Expansion',
-                value: <StatusLabel status={sc.allowVolumeExpansion ? 'success' : 'warning'}>
-                  {sc.allowVolumeExpansion ? 'Yes' : 'No'}
-                </StatusLabel>,
+                value: (
+                  <StatusLabel status={sc.allowVolumeExpansion ? 'success' : 'warning'}>
+                    {sc.allowVolumeExpansion ? 'Yes' : 'No'}
+                  </StatusLabel>
+                ),
               },
               { name: 'Delete Strategy', value: params.deleteStrategy ?? '—' },
               {
                 name: 'Encryption',
-                value: params.encryption === 'true'
-                  ? <StatusLabel status="success">Enabled</StatusLabel>
-                  : <StatusLabel status="warning">Disabled</StatusLabel>,
+                value:
+                  params.encryption === 'true' ? (
+                    <StatusLabel status="success">Enabled</StatusLabel>
+                  ) : (
+                    <StatusLabel status="warning">Disabled</StatusLabel>
+                  ),
               },
               { name: 'Provisioner', value: sc.provisioner },
               { name: 'Bound PVs', value: String(pvCount) },
@@ -122,13 +150,19 @@ function protocolNotes(protocol: string): Array<{ name: string; value: React.Rea
   const lower = protocol.toLowerCase();
   if (lower === 'nfs') {
     return [
-      { name: 'Prerequisite', value: 'nfs-common (Debian/Ubuntu) or nfs-utils (RHEL/Fedora) required on all nodes' },
+      {
+        name: 'Prerequisite',
+        value: 'nfs-common (Debian/Ubuntu) or nfs-utils (RHEL/Fedora) required on all nodes',
+      },
       { name: 'Access Modes', value: 'Supports RWO, RWX, RWOP' },
     ];
   }
   if (lower === 'nvmeof') {
     return [
-      { name: 'Prerequisite', value: 'nvme-cli + kernel modules nvme-tcp and nvme-fabrics required on all nodes' },
+      {
+        name: 'Prerequisite',
+        value: 'nvme-cli + kernel modules nvme-tcp and nvme-fabrics required on all nodes',
+      },
       { name: 'Networking', value: 'Static IP required — DHCP is not supported for NVMe-oF' },
       { name: 'Access Modes', value: 'Supports RWO, RWOP' },
     ];
@@ -151,9 +185,7 @@ export default function StorageClassesPage() {
   const history = useHistory();
   const { storageClasses, persistentVolumes, loading, error } = useTnsCsiContext();
 
-  const [selectedName, setSelectedName] = useState<string | null>(
-    location.hash.slice(1) || null
-  );
+  const [selectedName, setSelectedName] = useState<string | null>(location.hash.slice(1) || null);
 
   useEffect(() => {
     setSelectedName(location.hash.slice(1) || null);
@@ -186,7 +218,9 @@ export default function StorageClassesPage() {
       <>
         <SectionHeader title="TNS-CSI — Storage Classes" />
         <SectionBox title="Error">
-          <NameValueTable rows={[{ name: 'Status', value: <StatusLabel status="error">{error}</StatusLabel> }]} />
+          <NameValueTable
+            rows={[{ name: 'Status', value: <StatusLabel status="error">{error}</StatusLabel> }]}
+          />
         </SectionBox>
       </>
     );
@@ -199,7 +233,9 @@ export default function StorageClassesPage() {
     pvCountBySc.set(scName, (pvCountBySc.get(scName) ?? 0) + 1);
   }
 
-  const selectedSc = selectedName ? storageClasses.find(sc => sc.metadata.name === selectedName) ?? null : null;
+  const selectedSc = selectedName
+    ? storageClasses.find(sc => sc.metadata.name === selectedName) ?? null
+    : null;
 
   return (
     <>
@@ -212,16 +248,30 @@ export default function StorageClassesPage() {
               getter: (sc: TnsCsiStorageClass) => (
                 <button
                   onClick={() => openSc(sc.metadata.name)}
-                  style={{ border: 'none', background: 'transparent', color: 'var(--link-color, #1976d2)', cursor: 'pointer', textDecoration: 'underline', padding: 0, font: 'inherit' }}
+                  style={{
+                    border: 'none',
+                    background: 'transparent',
+                    color: 'var(--link-color, #1976d2)',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    padding: 0,
+                    font: 'inherit',
+                  }}
                 >
                   {sc.metadata.name}
                 </button>
               ),
             },
-            { label: 'Protocol', getter: (sc: TnsCsiStorageClass) => formatProtocol(sc.parameters?.protocol) },
+            {
+              label: 'Protocol',
+              getter: (sc: TnsCsiStorageClass) => formatProtocol(sc.parameters?.protocol),
+            },
             { label: 'Pool', getter: (sc: TnsCsiStorageClass) => sc.parameters?.pool ?? '—' },
             { label: 'Server', getter: (sc: TnsCsiStorageClass) => sc.parameters?.server ?? '—' },
-            { label: 'Reclaim Policy', getter: (sc: TnsCsiStorageClass) => sc.reclaimPolicy ?? '—' },
+            {
+              label: 'Reclaim Policy',
+              getter: (sc: TnsCsiStorageClass) => sc.reclaimPolicy ?? '—',
+            },
             {
               label: 'Expansion',
               getter: (sc: TnsCsiStorageClass) => (
@@ -245,7 +295,15 @@ export default function StorageClassesPage() {
           <div
             onClick={closeSc}
             aria-label="Close panel backdrop"
-            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1100 }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              zIndex: 1100,
+            }}
           />
           <StorageClassDetailPanel
             sc={selectedSc}

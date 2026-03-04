@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.6] - 2026-03-04
+
+### Fixed
+
+- **PVC bind loop leak** — benchmark page's PVC wait loop now checks a cancellation ref on unmount, preventing leaked async work after navigation
+- **DeleteOptions body** — `deleteJob` now sends correct Kubernetes `DeleteOptions` with `apiVersion` and `kind` fields so foreground propagation is honored
+- **Snapshot filtering** — `TnsCsiDataContext` now filters volume snapshots and snapshot classes to only tns-csi driver ones using `filterTnsCsiVolumeSnapshots` and `isTnsCsiVolumeSnapshotClass` (previously showed all drivers' snapshots)
+- **Stale closures in Escape handlers** — `closeSc` / `closeVolume` in StorageClassesPage and VolumesPage wrapped in `useCallback` with proper deps, removing `eslint-disable` suppressions
+- **Cleanup button double-click** — benchmark cleanup "Delete Job + PVC" button now has a `cleaningUp` loading state with disabled styling, replacing unsafe `window.confirm`/`window.alert` calls
+- **Dark mode protocol colors** — replaced hardcoded hex colors in OverviewPage protocol chart with `var(--mui-palette-*)` tokens
+- **Import style consistency** — unified `React.useMemo` to destructured `useMemo` in OverviewPage
+- **Lint warnings** — fixed all 35 ESLint warnings (import sorting, indentation, boolean attributes, line length, chained call newlines)
+
 ## [0.2.4] - 2026-02-26
 
 ### Added
@@ -89,7 +102,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TypeScript strict mode with zero `any` types
 - ESLint + Prettier code quality tooling
 
-[Unreleased]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.4...HEAD
+[Unreleased]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.6...HEAD
+[0.2.6]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.5...v0.2.6
 [0.2.4]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.1...v0.2.2

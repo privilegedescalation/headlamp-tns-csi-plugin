@@ -77,7 +77,8 @@ export const KBENCH_STORAGE_CLASS_ANNOTATION = 'tns-csi.headlamp/storage-class';
 // ---------------------------------------------------------------------------
 
 function shortId(): string {
-  return Math.random().toString(36).slice(2, 8);
+  return Math.random().toString(36)
+    .slice(2, 8);
 }
 
 export function generateJobName(): string {
@@ -269,7 +270,11 @@ export async function fetchKbenchLogs(jobName: string, namespace: string): Promi
 export async function deleteJob(jobName: string, namespace: string): Promise<void> {
   await ApiProxy.request(`/apis/batch/v1/namespaces/${namespace}/jobs/${jobName}`, {
     method: 'DELETE',
-    body: JSON.stringify({ propagationPolicy: 'Foreground' }),
+    body: JSON.stringify({
+      apiVersion: 'v1',
+      kind: 'DeleteOptions',
+      propagationPolicy: 'Foreground',
+    }),
     headers: { 'Content-Type': 'application/json' },
   });
 }

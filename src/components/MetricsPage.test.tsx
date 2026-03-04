@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock(
   '@kinvolk/headlamp-plugin/lib/CommonComponents',
@@ -15,9 +15,9 @@ vi.mock('../api/metrics', async importOriginal => {
   };
 });
 
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import { fetchControllerMetrics } from '../api/metrics';
-import { defaultContext, makeSamplePod, makeSampleMetrics } from '../test-helpers';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
+import { defaultContext, makeSampleMetrics, makeSamplePod } from '../test-helpers';
 import MetricsPage from './MetricsPage';
 
 function mockContext(overrides?: Parameters<typeof defaultContext>[0]) {

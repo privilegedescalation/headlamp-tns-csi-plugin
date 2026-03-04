@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor, act } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@kinvolk/headlamp-plugin/lib', () => ({
   ApiProxy: {
@@ -39,9 +39,9 @@ vi.mock('../api/kbench', async importOriginal => {
   };
 });
 
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import { ApiProxy } from '@kinvolk/headlamp-plugin/lib';
-import { createPvc, createJob, listKbenchJobs } from '../api/kbench';
+import { createJob, createPvc, listKbenchJobs } from '../api/kbench';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import { defaultContext, makeSampleStorageClass } from '../test-helpers';
 import BenchmarkPage from './BenchmarkPage';
 

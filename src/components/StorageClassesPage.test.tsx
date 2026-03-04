@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock(
   '@kinvolk/headlamp-plugin/lib/CommonComponents',
@@ -16,7 +16,7 @@ vi.mock('react-router-dom', () => ({
 vi.mock('../api/TnsCsiDataContext');
 
 import { useTnsCsiContext } from '../api/TnsCsiDataContext';
-import { defaultContext, makeSampleStorageClass, makeSamplePV } from '../test-helpers';
+import { defaultContext, makeSamplePV, makeSampleStorageClass } from '../test-helpers';
 import StorageClassesPage from './StorageClassesPage';
 
 function mockContext(overrides?: Parameters<typeof defaultContext>[0]) {

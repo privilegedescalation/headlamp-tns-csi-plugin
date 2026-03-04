@@ -8,7 +8,7 @@
 
 import { NameValueTable, SectionBox } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
 import React from 'react';
-import { formatAge, isPodReady, getPodRestarts, TnsCsiPod } from '../api/k8s';
+import { formatAge, getPodRestarts, isPodReady, TnsCsiPod } from '../api/k8s';
 
 interface DriverPodDetailSectionProps {
   resource: {

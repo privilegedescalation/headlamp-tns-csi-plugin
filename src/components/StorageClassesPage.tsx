@@ -13,11 +13,11 @@ import {
   SimpleTable,
   StatusLabel,
 } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import type { TnsCsiStorageClass } from '../api/k8s';
 import { formatProtocol } from '../api/k8s';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 
 // ---------------------------------------------------------------------------
 // Detail drawer
@@ -196,10 +196,10 @@ export default function StorageClassesPage() {
     history.push(`${location.pathname}#${name}`);
   };
 
-  const closeSc = () => {
+  const closeSc = useCallback(() => {
     setSelectedName(null);
     history.push(location.pathname);
-  };
+  }, [history, location.pathname]);
 
   useEffect(() => {
     if (!selectedName) return;
@@ -208,8 +208,7 @@ export default function StorageClassesPage() {
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedName]);
+  }, [selectedName, closeSc]);
 
   if (loading) return <Loader title="Loading storage classes..." />;
 

@@ -4,7 +4,6 @@
  */
 
 import { vi } from 'vitest';
-import type { TnsCsiContextValue } from './api/TnsCsiDataContext';
 import type {
   CSIDriver,
   TnsCsiPersistentVolume,
@@ -15,6 +14,7 @@ import type {
   VolumeSnapshotClass,
 } from './api/k8s';
 import type { TnsCsiMetrics } from './api/metrics';
+import type { TnsCsiContextValue } from './api/TnsCsiDataContext';
 
 // ---------------------------------------------------------------------------
 // Default context value (everything empty / zeroed)

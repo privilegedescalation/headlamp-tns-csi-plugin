@@ -15,20 +15,20 @@ import {
 } from '@kinvolk/headlamp-plugin/lib';
 import React from 'react';
 import { TnsCsiDataProvider } from './api/TnsCsiDataContext';
-import TnsCsiSettings from './components/TnsCsiSettings';
 import BenchmarkPage from './components/BenchmarkPage';
 import DriverPodDetailSection from './components/DriverPodDetailSection';
+import StorageClassBenchmarkButton from './components/integrations/StorageClassBenchmarkButton';
 import {
   buildPVColumns,
   buildStorageClassColumns,
 } from './components/integrations/StorageClassColumns';
-import StorageClassBenchmarkButton from './components/integrations/StorageClassBenchmarkButton';
 import MetricsPage from './components/MetricsPage';
 import OverviewPage from './components/OverviewPage';
 import PVCDetailSection from './components/PVCDetailSection';
 import PVDetailSection from './components/PVDetailSection';
 import SnapshotsPage from './components/SnapshotsPage';
 import StorageClassesPage from './components/StorageClassesPage';
+import TnsCsiSettings from './components/TnsCsiSettings';
 import VolumesPage from './components/VolumesPage';
 
 // ---------------------------------------------------------------------------

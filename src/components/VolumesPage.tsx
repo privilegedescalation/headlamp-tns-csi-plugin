@@ -11,11 +11,11 @@ import {
   SimpleTable,
   StatusLabel,
 } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import type { TnsCsiPersistentVolume } from '../api/k8s';
 import { formatAccessModes, formatAge, formatProtocol, phaseToStatus } from '../api/k8s';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 
 // ---------------------------------------------------------------------------
 // Detail panel
@@ -180,10 +180,10 @@ export default function VolumesPage() {
     history.push(`${location.pathname}#${name}`);
   };
 
-  const closeVolume = () => {
+  const closeVolume = useCallback(() => {
     setSelectedName(null);
     history.push(location.pathname);
-  };
+  }, [history, location.pathname]);
 
   useEffect(() => {
     if (!selectedName) return;
@@ -192,8 +192,7 @@ export default function VolumesPage() {
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedName]);
+  }, [selectedName, closeVolume]);
 
   if (loading) return <Loader title="Loading volumes..." />;
 

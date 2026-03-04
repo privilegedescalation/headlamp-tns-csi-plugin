@@ -15,7 +15,7 @@ import {
   StatusLabel,
 } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
+import { formatAge } from '../api/k8s';
 import type { BenchmarkState, KbenchJobSummary, KbenchResult } from '../api/kbench';
 import {
   createJob,
@@ -32,7 +32,7 @@ import {
   listKbenchJobs,
   parseKbenchLog,
 } from '../api/kbench';
-import { formatAge } from '../api/k8s';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 
 // ---------------------------------------------------------------------------
 // Result display components
@@ -184,8 +184,8 @@ function KbenchResultDisplay({ result }: { result: KbenchResult }) {
           ]}
         />
       </SectionBox>
-      <ResultTable title="IOPS (Read/Write)" rows={iopsRows} higherIsBetter={true} />
-      <ResultTable title="Bandwidth" rows={bwRows} higherIsBetter={true} />
+      <ResultTable title="IOPS (Read/Write)" rows={iopsRows} higherIsBetter />
+      <ResultTable title="Bandwidth" rows={bwRows} higherIsBetter />
       <ResultTable title="Latency" rows={latRows} higherIsBetter={false} />
     </>
   );
@@ -601,6 +601,8 @@ export default function BenchmarkPage() {
   const [currentResult, setCurrentResult] = useState<KbenchResult | null>(null);
   const [lastNamespace, setLastNamespace] = useState('default');
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const cancelledRef = useRef(false);
+  const [cleaningUp, setCleaningUp] = useState(false);
 
   const scNames = storageClasses.map(sc => sc.metadata.name);
 
@@ -618,6 +620,7 @@ export default function BenchmarkPage() {
     mode: string;
   }) {
     stopPolling();
+    cancelledRef.current = false;
     setCurrentResult(null);
     setLastNamespace(opts.namespace);
 
@@ -650,7 +653,7 @@ export default function BenchmarkPage() {
     setBenchState({ status: 'waiting-pvc', pvcName });
     const pvcDeadline = Date.now() + MAX_PVC_WAIT_MS;
     let pvcBound = false;
-    while (Date.now() < pvcDeadline) {
+    while (Date.now() < pvcDeadline && !cancelledRef.current) {
       try {
         const pvc = (await ApiProxy.request(
           `/api/v1/namespaces/${opts.namespace}/persistentvolumeclaims/${pvcName}`
@@ -664,6 +667,7 @@ export default function BenchmarkPage() {
       }
       await new Promise(r => setTimeout(r, 5000));
     }
+    if (cancelledRef.current) return;
     if (!pvcBound) {
       setBenchState({
         status: 'failed',
@@ -746,8 +750,14 @@ export default function BenchmarkPage() {
     }, POLL_INTERVAL_MS);
   }
 
-  // Clean up polling on unmount
-  useEffect(() => () => stopPolling(), []);
+  // Clean up polling and cancel async loops on unmount
+  useEffect(
+    () => () => {
+      cancelledRef.current = true;
+      stopPolling();
+    },
+    []
+  );
 
   const isRunning =
     benchState.status !== 'idle' &&
@@ -808,24 +818,25 @@ export default function BenchmarkPage() {
                     <button
                       onClick={async () => {
                         const state = benchState;
-                        if (state.status !== 'complete') return;
-                        if (
-                          !window.confirm(
-                            `Delete job "${state.jobName}" and PVC "${state.pvcName}"?`
-                          )
-                        )
-                          return;
+                        if (state.status !== 'complete' || cleaningUp) return;
+                        setCleaningUp(true);
                         try {
                           await deleteJob(state.jobName, lastNamespace);
                           await deletePvc(state.pvcName, lastNamespace);
                           setBenchState({ status: 'idle' });
                           setCurrentResult(null);
                         } catch (err: unknown) {
-                          alert(
-                            `Cleanup error: ${err instanceof Error ? err.message : String(err)}`
-                          );
+                          setBenchState({
+                            status: 'failed',
+                            error: `Cleanup error: ${err instanceof Error ? err.message : String(err)}`,
+                            jobName: state.jobName,
+                            pvcName: state.pvcName,
+                          });
+                        } finally {
+                          setCleaningUp(false);
                         }
                       }}
+                      disabled={cleaningUp}
                       aria-label="Delete benchmark job and PVC"
                       style={{
                         padding: '6px 14px',
@@ -833,11 +844,12 @@ export default function BenchmarkPage() {
                         color: 'var(--mui-palette-error-main, #d32f2f)',
                         background: 'transparent',
                         borderRadius: '4px',
-                        cursor: 'pointer',
+                        cursor: cleaningUp ? 'not-allowed' : 'pointer',
                         fontSize: '13px',
+                        opacity: cleaningUp ? 0.6 : 1,
                       }}
                     >
-                      Delete Job + PVC
+                      {cleaningUp ? 'Deleting...' : 'Delete Job + PVC'}
                     </button>
                   ),
                 },

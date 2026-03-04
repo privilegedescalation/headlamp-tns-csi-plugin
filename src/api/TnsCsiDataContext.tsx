@@ -13,12 +13,14 @@ import {
   filterTnsCsiPersistentVolumes,
   filterTnsCsiPVCs,
   filterTnsCsiStorageClasses,
+  filterTnsCsiVolumeSnapshots,
   isKubeList,
+  isTnsCsiVolumeSnapshotClass,
+  TNS_CSI_PROVISIONER,
   TnsCsiPersistentVolume,
   TnsCsiPersistentVolumeClaim,
   TnsCsiPod,
   TnsCsiStorageClass,
-  TNS_CSI_PROVISIONER,
   VolumeSnapshot,
   VolumeSnapshotClass,
 } from './k8s';
@@ -151,14 +153,19 @@ export function TnsCsiDataProvider({ children }: { children: React.ReactNode }) 
             '/apis/snapshot.storage.k8s.io/v1/volumesnapshotclasses'
           );
           if (!cancelled && isKubeList(vscList)) {
-            setVolumeSnapshotClasses(vscList.items as VolumeSnapshotClass[]);
+            const allSnapshotClasses = vscList.items as VolumeSnapshotClass[];
+            const tnsCsiSnapshotClasses = allSnapshotClasses.filter(isTnsCsiVolumeSnapshotClass);
+            setVolumeSnapshotClasses(tnsCsiSnapshotClasses);
             setSnapshotCrdAvailable(true);
+
+            const tnsCsiClassNames = new Set(tnsCsiSnapshotClasses.map(c => c.metadata.name));
 
             const vsList = await ApiProxy.request(
               '/apis/snapshot.storage.k8s.io/v1/volumesnapshots'
             );
             if (!cancelled && isKubeList(vsList)) {
-              setVolumeSnapshots(vsList.items as VolumeSnapshot[]);
+              const allSnapshots = vsList.items as VolumeSnapshot[];
+              setVolumeSnapshots(filterTnsCsiVolumeSnapshots(allSnapshots, tnsCsiClassNames));
             }
           }
         } catch {

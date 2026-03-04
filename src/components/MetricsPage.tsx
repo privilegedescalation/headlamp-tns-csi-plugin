@@ -11,9 +11,9 @@ import {
   StatusLabel,
 } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import type { TnsCsiMetrics } from '../api/metrics';
 import { fetchControllerMetrics, formatBytes, groupByLabel, sumSamples } from '../api/metrics';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 
 function formatAuditTime(iso: string): string {
   const date = new Date(iso);

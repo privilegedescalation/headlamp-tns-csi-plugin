@@ -7,8 +7,8 @@
 
 import { NameValueTable, SectionBox } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
 import React from 'react';
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import { findBoundPv, formatProtocol } from '../api/k8s';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 
 interface PVCDetailSectionProps {
   resource: {

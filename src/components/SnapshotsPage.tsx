@@ -12,9 +12,9 @@ import {
   StatusLabel,
 } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
 import React from 'react';
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import type { VolumeSnapshot } from '../api/k8s';
 import { formatAge } from '../api/k8s';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 
 export default function SnapshotsPage() {
   const { volumeSnapshots, volumeSnapshotClasses, snapshotCrdAvailable, loading, error } =

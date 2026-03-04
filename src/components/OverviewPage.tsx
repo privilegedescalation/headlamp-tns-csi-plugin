@@ -14,11 +14,11 @@ import {
   SimpleTable,
   StatusLabel,
 } from '@kinvolk/headlamp-plugin/lib/CommonComponents';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useTnsCsiContext } from '../api/TnsCsiDataContext';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatAge, formatProtocol, phaseToStatus } from '../api/k8s';
 import type { TnsCsiMetrics } from '../api/metrics';
 import { fetchControllerMetrics } from '../api/metrics';
+import { useTnsCsiContext } from '../api/TnsCsiDataContext';
 import DriverStatusCard from './DriverStatusCard';
 
 // ---------------------------------------------------------------------------
@@ -26,10 +26,10 @@ import DriverStatusCard from './DriverStatusCard';
 // ---------------------------------------------------------------------------
 
 const PROTOCOL_COLORS: Record<string, string> = {
-  NFS: '#1976d2',
-  'NVMe-oF': '#9c27b0',
-  iSCSI: '#f57c00',
-  Other: '#9e9e9e',
+  NFS: 'var(--mui-palette-primary-main, #1976d2)',
+  'NVMe-oF': 'var(--mui-palette-secondary-main, #9c27b0)',
+  iSCSI: 'var(--mui-palette-warning-main, #f57c00)',
+  Other: 'var(--mui-palette-action-disabled, #9e9e9e)',
 };
 
 function protocolChartData(storageClasses: Array<{ parameters?: { protocol?: string } }>) {
@@ -85,7 +85,7 @@ export default function OverviewPage() {
     void fetchMetrics();
   }, [fetchMetrics]);
 
-  const capacityByPool: Map<string, number> = React.useMemo(() => {
+  const capacityByPool: Map<string, number> = useMemo(() => {
     const map = new Map<string, number>();
     if (!metrics) return map;
     const handleToPool = new Map<string, string>();
@@ -256,19 +256,19 @@ export default function OverviewPage() {
             },
             ...(pvcStatusCounts.Pending > 0
               ? [
-                  {
-                    name: 'PVCs (Pending)',
-                    value: <StatusLabel status="warning">{pvcStatusCounts.Pending}</StatusLabel>,
-                  },
-                ]
+                {
+                  name: 'PVCs (Pending)',
+                  value: <StatusLabel status="warning">{pvcStatusCounts.Pending}</StatusLabel>,
+                },
+              ]
               : []),
             ...(pvcStatusCounts.Lost > 0
               ? [
-                  {
-                    name: 'PVCs (Lost)',
-                    value: <StatusLabel status="error">{pvcStatusCounts.Lost}</StatusLabel>,
-                  },
-                ]
+                {
+                  name: 'PVCs (Lost)',
+                  value: <StatusLabel status="error">{pvcStatusCounts.Lost}</StatusLabel>,
+                },
+              ]
               : []),
           ]}
         />
@@ -318,7 +318,8 @@ export default function OverviewPage() {
         </SectionBox>
       )}
 
-      {/* Provisioned capacity by pool (from Prometheus metrics — shown when TrueNAS API not configured) */}
+      {/* Provisioned capacity by pool (from Prometheus metrics —
+          shown when TrueNAS API not configured) */}
       {poolStats.length === 0 && !poolStatsError && capacityByPool.size > 0 && (
         <SectionBox title="Provisioned Capacity by Pool">
           <NameValueTable

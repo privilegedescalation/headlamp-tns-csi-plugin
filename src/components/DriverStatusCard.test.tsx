@@ -6,8 +6,8 @@ vi.mock(
   async () => await import('./__mocks__/commonComponents')
 );
 
+import { makeSampleMetrics, makeSamplePod, sampleCSIDriver } from '../test-helpers';
 import DriverStatusCard from './DriverStatusCard';
-import { makeSamplePod, sampleCSIDriver, makeSampleMetrics } from '../test-helpers';
 
 describe('DriverStatusCard', () => {
   it('shows "Not detected" when no CSI driver is present', () => {

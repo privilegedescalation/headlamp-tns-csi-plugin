@@ -81,7 +81,10 @@ jobs:
           VERSION="${{ inputs.version }}"
           PKG_NAME=$(jq -r .name package.json)
           TARBALL="${PKG_NAME}-${VERSION}.tar.gz"
-          mv *.tar.gz "$TARBALL"
+          # Rename tarball if headlamp-plugin produced a different name
+          for f in *.tar.gz; do
+            [ "$f" != "$TARBALL" ] && mv "$f" "$TARBALL"
+          done
           echo "TARBALL=$TARBALL" >> $GITHUB_ENV
           echo "PKG_NAME=$PKG_NAME" >> $GITHUB_ENV
 

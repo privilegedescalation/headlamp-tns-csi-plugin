@@ -77,8 +77,7 @@ export const KBENCH_STORAGE_CLASS_ANNOTATION = 'tns-csi.headlamp/storage-class';
 // ---------------------------------------------------------------------------
 
 function shortId(): string {
-  return Math.random().toString(36)
-    .slice(2, 8);
+  return Math.random().toString(36).slice(2, 8);
 }
 
 export function generateJobName(): string {

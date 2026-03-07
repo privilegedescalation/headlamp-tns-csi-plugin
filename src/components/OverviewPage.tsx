@@ -256,19 +256,19 @@ export default function OverviewPage() {
             },
             ...(pvcStatusCounts.Pending > 0
               ? [
-                {
-                  name: 'PVCs (Pending)',
-                  value: <StatusLabel status="warning">{pvcStatusCounts.Pending}</StatusLabel>,
-                },
-              ]
+                  {
+                    name: 'PVCs (Pending)',
+                    value: <StatusLabel status="warning">{pvcStatusCounts.Pending}</StatusLabel>,
+                  },
+                ]
               : []),
             ...(pvcStatusCounts.Lost > 0
               ? [
-                {
-                  name: 'PVCs (Lost)',
-                  value: <StatusLabel status="error">{pvcStatusCounts.Lost}</StatusLabel>,
-                },
-              ]
+                  {
+                    name: 'PVCs (Lost)',
+                    value: <StatusLabel status="error">{pvcStatusCounts.Lost}</StatusLabel>,
+                  },
+                ]
               : []),
           ]}
         />

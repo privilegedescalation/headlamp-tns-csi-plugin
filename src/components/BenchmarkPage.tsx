@@ -828,7 +828,9 @@ export default function BenchmarkPage() {
                         } catch (err: unknown) {
                           setBenchState({
                             status: 'failed',
-                            error: `Cleanup error: ${err instanceof Error ? err.message : String(err)}`,
+                            error: `Cleanup error: ${
+                              err instanceof Error ? err.message : String(err)
+                            }`,
                             jobName: state.jobName,
                             pvcName: state.pvcName,
                           });

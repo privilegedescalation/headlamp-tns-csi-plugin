@@ -47,9 +47,14 @@ The tns-csi driver must be deployed in `kube-system` with the standard `app.kube
 
 ## Installing
 
-### Option 1: Headlamp Plugin Manager (Recommended)
+The plugin is published on [Artifact Hub](https://artifacthub.io/packages/headlamp/tns-csi/headlamp-tns-csi-plugin). Install via the Headlamp UI:
 
-The plugin is published on [Artifact Hub](https://artifacthub.io/packages/headlamp/tns-csi/headlamp-tns-csi-plugin). Configure Headlamp via Helm:
+1. Go to **Settings → Plugins**
+2. Click **Catalog** tab
+3. Search for "TNS CSI" or "TrueNAS"
+4. Click **Install**
+
+Or configure Headlamp via Helm:
 
 ```yaml
 config:
@@ -59,32 +64,6 @@ pluginsManager:
   sources:
     - name: tns-csi
       url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
-```
-
-Or install via the Headlamp UI:
-
-1. Go to **Settings → Plugins**
-2. Click **Catalog** tab
-3. Search for "TNS CSI" or "TrueNAS"
-4. Click **Install**
-
-### Option 2: Manual Tarball Install
-
-Download the `.tar.gz` from the [GitHub releases page](https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases), then extract into Headlamp's plugin directory:
-
-```bash
-wget https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
-tar xzf tns-csi-0.2.4.tar.gz -C /headlamp/plugins/
-```
-
-### Option 3: Build from Source
-
-```bash
-git clone https://github.com/privilegedescalation/headlamp-tns-csi-plugin.git
-cd headlamp-tns-csi-plugin
-npm install
-npm run build
-npx @kinvolk/headlamp-plugin extract . /headlamp/plugins
 ```
 
 ## RBAC / Security Setup

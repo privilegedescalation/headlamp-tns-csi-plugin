@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-03-24
+
+### Added
+
+- **Missing devDependencies** — added `@mui/material`, `@types/react`, `@types/react-dom`, and `notistack` to devDependencies so the full test suite resolves correctly; upgraded `vitest` to `^3.2.4`
+
+### Changed
+
+- **Test infrastructure fix** — added `define: { 'process.env.NODE_ENV': '"test"' }` to `vitest.config.mts` to prevent React production-build `act()` errors; all 159 component tests now pass
+- **Version bump** — bumped package version from 0.2.7 to 1.0.0 (stable release)
+- **Lock file** — removed `package-lock.json`; `pnpm-lock.yaml` is now the canonical lock file
+- **Renovate config** — extended from org-level preset (PR #18)
+- **GitHub Actions SHA pinning** — added `pinDigests` to Renovate config for SHA-pinned Actions (PR #17)
+- **Dual-approval caller workflow** — added dual-approval status check workflow to CI (PR #16)
+- **Release workflow** — GitHub App token secrets now passed to release workflow (PR #15)
+
 ## [0.2.6] - 2026-03-04
 
 ### Fixed
@@ -102,7 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TypeScript strict mode with zero `any` types
 - ESLint + Prettier code quality tooling
 
-[Unreleased]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.6...HEAD
+[Unreleased]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.7...v1.0.0
 [0.2.6]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.5...v0.2.6
 [0.2.4]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/compare/v0.2.2...v0.2.3

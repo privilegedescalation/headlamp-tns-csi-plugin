@@ -63,12 +63,12 @@ config:
 pluginsManager:
   sources:
     - name: tns-csi
-      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
+      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.0/tns-csi-1.0.0.tar.gz
 ```
 
 ## RBAC / Security Setup
 
-The plugin reads from the Kubernetes API and the tns-csi controller pod's Prometheus endpoint. The Benchmark page additionally creates and deletes Jobs and PVCs.
+The plugin reads from the Kubernetes API and the tns-csi controller pod's Prometheus endpoint (deployed in `kube-system`). The Benchmark page additionally creates and deletes Jobs and PVCs.
 
 ### Minimal read-only permissions
 
@@ -90,6 +90,10 @@ rules:
   - apiGroups: [""]
     resources: ["pods/log"]
     verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["pods/proxy"]
+    verbs: ["get"]
+    resourceNames: ["pods"]
 ```
 
 ### Additional permissions for Benchmark page
@@ -105,13 +109,13 @@ rules:
 
 ### Metrics access
 
-The plugin fetches Prometheus metrics from the tns-csi controller pod via the Kubernetes pod proxy sub-resource. Grant `get` on `pods/proxy` in `kube-system`:
+The plugin fetches Prometheus metrics from the tns-csi controller pod via the Kubernetes pod proxy sub-resource in `kube-system`. Grant `get` on `pods/proxy` scoped to `kube-system`:
 
 ```yaml
   - apiGroups: [""]
     resources: ["pods/proxy"]
     verbs: ["get"]
-    # Optionally scope to the controller pod namespace
+    # Scope to kube-system where the tns-csi controller runs
 ```
 
 Apply the role and bind it to your Headlamp service account with a ClusterRoleBinding.

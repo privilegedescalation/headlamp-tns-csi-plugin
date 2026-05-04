@@ -28,7 +28,7 @@ The TNS-CSI plugin is a single-page React application bundled as a Headlamp plug
                         │ HTTPS
                         ▼
 ┌─────────────────────────────────────────────────────┐
-│              Headlamp Pod (kube-system)              │
+│              Headlamp Pod (headlamp namespace)              │
 │                                                     │
 │  Headlamp UI server + API proxy                     │
 │  (forwards requests using service account token     │
@@ -42,10 +42,10 @@ The TNS-CSI plugin is a single-page React application bundled as a Headlamp plug
 │  ├── /apis/storage.k8s.io/v1/storageclasses         │
 │  ├── /api/v1/persistentvolumes                      │
 │  ├── /api/v1/persistentvolumeclaims                 │
-│  ├── /api/v1/namespaces/kube-system/pods            │
+│  ├── /api/v1/namespaces/headlamp/pods            │
 │  ├── /apis/storage.k8s.io/v1/csidrivers            │
 │  ├── /apis/snapshot.storage.k8s.io/v1/...          │
-│  ├── /api/v1/namespaces/kube-system/pods/<pod>/proxy/metrics
+│  ├── /api/v1/namespaces/headlamp/pods/<pod>/proxy/metrics
 │  └── (Benchmark) /apis/batch/v1/jobs               │
 └─────────────────────────────────────────────────────┘
 ```

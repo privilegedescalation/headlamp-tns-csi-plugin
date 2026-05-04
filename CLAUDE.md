@@ -48,7 +48,7 @@ src/
 - Provisioner: `tns.csi.io`
 - Controller pod selector: `app.kubernetes.io/name=tns-csi-driver,app.kubernetes.io/component=controller`
 - Node pod selector: `app.kubernetes.io/name=tns-csi-driver,app.kubernetes.io/component=node`
-- Driver namespace: `kube-system`
+- Driver namespace: `headlamp`
 - Metrics port: `8080`
 - kbench image: `yasker/kbench:latest`
 - kbench managed-by label: `app.kubernetes.io/managed-by=headlamp-tns-csi-plugin`

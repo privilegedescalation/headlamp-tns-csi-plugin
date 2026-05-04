@@ -187,7 +187,7 @@ Report security vulnerabilities via:
 
 The project uses:
 - **npm audit**: Runs automatically during `npm install`
-- **GitHub Dependabot**: Monitors dependencies and creates PRs for updates
+- **Renovate**: Automated dependency updates via Mend Renovate (org-wide configured)
 
 Headlamp itself (`@kinvolk/headlamp-plugin`) is a peer dependency. Security updates to Headlamp should be applied by upgrading your Headlamp installation.
 

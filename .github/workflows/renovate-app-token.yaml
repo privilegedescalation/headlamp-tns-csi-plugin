@@ -1,0 +1,21 @@
+name: Mend Renovate GitHub App Token
+
+on:
+  workflow_call:
+    outputs:
+      token:
+        description: "Short-lived GitHub App installation token"
+        value: ${{ jobs.app-token.outputs.token }}
+
+jobs:
+  app-token:
+    runs-on: runners-privilegedescalation
+    outputs:
+      token: ${{ steps.app-token.outputs.token }}
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}

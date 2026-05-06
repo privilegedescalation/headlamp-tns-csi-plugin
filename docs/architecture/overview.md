@@ -28,7 +28,7 @@ The TNS-CSI plugin is a single-page React application bundled as a Headlamp plug
                         │ HTTPS
                         ▼
 ┌─────────────────────────────────────────────────────┐
-│              Headlamp Pod (kube-system)              │
+│              Headlamp Pod (headlamp namespace)              │
 │                                                     │
 │  Headlamp UI server + API proxy                     │
 │  (forwards requests using service account token     │

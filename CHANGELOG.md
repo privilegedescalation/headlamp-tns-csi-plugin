@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **docs: namespace references** — Updated all documentation, README, and ArtifactHub metadata to explicitly reference the `headlamp` namespace instead of generic "controller pod" language. RBAC examples now clearly scope `pods/proxy` access to `kube-system` where the tns-csi controller runs.
+
 ## [1.0.0] - 2026-03-24
 
 ### Added

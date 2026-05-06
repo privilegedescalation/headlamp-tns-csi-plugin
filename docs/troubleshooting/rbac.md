@@ -11,16 +11,16 @@ Use `kubectl auth can-i` to check specific permissions:
 ```bash
 # Check if the Headlamp service account can list StorageClasses
 kubectl auth can-i list storageclasses \
-  --as=system:serviceaccount:kube-system:headlamp
+  --as=system:serviceaccount:headlamp:headlamp
 
 # Check pod proxy access (for metrics)
 kubectl auth can-i get pods/proxy \
   -n kube-system \
-  --as=system:serviceaccount:kube-system:headlamp
+  --as=system:serviceaccount:headlamp:headlamp
 
 # Check snapshot access
 kubectl auth can-i list volumesnapshots \
-  --as=system:serviceaccount:kube-system:headlamp
+  --as=system:serviceaccount:headlamp:headlamp
 ```
 
 ### Applying the Required RBAC

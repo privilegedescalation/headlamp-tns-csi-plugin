@@ -47,7 +47,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: headlamp          # adjust to your Headlamp service account name
-    namespace: kube-system  # adjust to your Headlamp namespace
+    namespace: headlamp  # adjust to your Headlamp namespace
 roleRef:
   kind: ClusterRole
   name: headlamp-tns-csi-reader
@@ -99,7 +99,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: headlamp
-    namespace: kube-system
+    namespace: headlamp
 roleRef:
   kind: Role
   name: headlamp-tns-csi-benchmark

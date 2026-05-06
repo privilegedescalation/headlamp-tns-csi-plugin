@@ -9,7 +9,7 @@ helm repo add headlamp https://headlamp-k8s.github.io/headlamp/
 helm repo update
 
 helm install headlamp headlamp/headlamp \
-  --namespace kube-system \
+  --namespace headlamp \
   --create-namespace \
   --set config.pluginsDir=/headlamp/plugins \
   --set pluginsManager.sources[0].name=tns-csi \
@@ -44,7 +44,7 @@ Apply:
 
 ```bash
 helm install headlamp headlamp/headlamp \
-  --namespace kube-system \
+  --namespace headlamp \
   -f headlamp-values.yaml
 ```
 
@@ -64,7 +64,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: headlamp
-  namespace: kube-system
+  namespace: headlamp
 spec:
   interval: 1h
   chart:
@@ -122,7 +122,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: headlamp
-    namespace: kube-system
+    namespace: headlamp
 roleRef:
   kind: ClusterRole
   name: headlamp-tns-csi-reader
@@ -136,7 +136,7 @@ To upgrade to a new plugin version, update the `url` in your values and apply:
 
 ```bash
 helm upgrade headlamp headlamp/headlamp \
-  --namespace kube-system \
+  --namespace headlamp \
   -f headlamp-values.yaml
 ```
 

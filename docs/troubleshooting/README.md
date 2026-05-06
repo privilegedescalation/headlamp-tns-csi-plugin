@@ -77,7 +77,7 @@ If a page shows a loading spinner indefinitely:
 
 1. **Check browser console** for errors (F12 → Console)
 2. **Check network tab** for failed API requests (look for 403, 404, 500)
-3. **Check Headlamp pod logs**: `kubectl logs -n kube-system -l app.kubernetes.io/name=headlamp`
+3. **Check Headlamp pod logs**: `kubectl logs -n headlamp -l app.kubernetes.io/name=headlamp`
 4. **Try refreshing** — the watch connection may have been interrupted
 
 ## Common API Errors
@@ -102,7 +102,7 @@ Look for errors related to `tns-csi`, `headlamp-plugin`, or Kubernetes API paths
 **Headlamp pod logs:**
 
 ```bash
-kubectl logs -n kube-system -l app.kubernetes.io/name=headlamp --tail=100
+kubectl logs -n headlamp -l app.kubernetes.io/name=headlamp --tail=100
 ```
 
 **tns-csi controller logs:**

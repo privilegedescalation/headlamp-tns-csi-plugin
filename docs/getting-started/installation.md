@@ -32,7 +32,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: headlamp
-  namespace: kube-system
+  namespace: <your-namespace>
 spec:
   chart:
     spec:

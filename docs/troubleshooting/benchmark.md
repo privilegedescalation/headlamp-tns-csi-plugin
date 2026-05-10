@@ -8,10 +8,10 @@ The Benchmark page requires permissions to create and delete Jobs and PVCs:
 
 ```bash
 kubectl auth can-i create jobs -n <benchmark-namespace> \
-  --as=system:serviceaccount:kube-system:headlamp
+  --as=system:serviceaccount:<your-namespace>:headlamp
 
 kubectl auth can-i create persistentvolumeclaims -n <benchmark-namespace> \
-  --as=system:serviceaccount:kube-system:headlamp
+  --as=system:serviceaccount:<your-namespace>:headlamp
 ```
 
 Apply the additional permissions if missing — see [RBAC Issues](rbac.md) or [SECURITY.md](../../SECURITY.md).

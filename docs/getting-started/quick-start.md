@@ -34,7 +34,7 @@ pluginsManager:
 Then upgrade your Headlamp release:
 
 ```bash
-helm upgrade headlamp headlamp/headlamp -f values.yaml -n kube-system
+helm upgrade headlamp headlamp/headlamp -f values.yaml -n <your-namespace>
 ```
 
 ## Step 2: Configure RBAC
@@ -70,7 +70,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: headlamp
-    namespace: kube-system
+    namespace: <your-namespace>
 roleRef:
   kind: ClusterRole
   name: headlamp-tns-csi-reader
@@ -78,7 +78,7 @@ roleRef:
 EOF
 ```
 
-Adjust `name: headlamp` and `namespace: kube-system` to match your Headlamp service account.
+Adjust `name: headlamp` and `namespace: <your-namespace>` to match your Headlamp service account.
 
 ## Step 3: Verify
 

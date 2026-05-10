@@ -91,7 +91,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: headlamp
-    namespace: kube-system   # adjust to your Headlamp namespace
+    namespace: <your-namespace>
 roleRef:
   kind: ClusterRole
   name: headlamp-tns-csi-reader
@@ -143,7 +143,7 @@ The Kubernetes API server performs the pod proxy hop, so policies should permit 
 
 ### Service Account (Default)
 
-Headlamp runs with a dedicated service account (`headlamp` in `kube-system`). All users share the same RBAC permissions.
+Headlamp runs with a dedicated service account (`headlamp` in the namespace where Headlamp is installed). All users share the same RBAC permissions.
 
 **Security Considerations:**
 - All users have identical access to plugin functionality including Benchmark
@@ -223,7 +223,7 @@ All API requests are logged in Kubernetes API audit logs (if enabled). Pod proxy
   "verb": "get",
   "requestURI": "/api/v1/namespaces/kube-system/pods/<controller-pod>/proxy/metrics",
   "user": {
-    "username": "system:serviceaccount:kube-system:headlamp"
+    "username": "system:serviceaccount:<your-namespace>:headlamp"
   }
 }
 ```

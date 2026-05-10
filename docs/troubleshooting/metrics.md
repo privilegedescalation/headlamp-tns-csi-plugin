@@ -47,7 +47,7 @@ This requires `get` on `pods/proxy` in `kube-system`:
 ```bash
 kubectl auth can-i get pods/proxy \
   -n kube-system \
-  --as=system:serviceaccount:kube-system:headlamp
+  --as=system:serviceaccount:<your-namespace>:headlamp
 ```
 
 ### 5. Network Policies

@@ -67,7 +67,7 @@ Welcome to the Headlamp TNS-CSI Plugin documentation.
 ## External Links
 
 - **[GitHub Repository](https://github.com/privilegedescalation/headlamp-tns-csi-plugin)**
-- **[Artifact Hub](https://artifacthub.io/packages/headlamp/headlamp-tns-csi-plugin/headlamp-tns-csi-plugin)**
+- **[Artifact Hub](https://artifacthub.io/packages/headlamp/tns-csi/headlamp-tns-csi-plugin)**
 - **[tns-csi Driver](https://github.com/fenio/tns-csi)**
 - **[kbench](https://github.com/longhorn/kbench)**
 - **[Headlamp](https://headlamp.dev/)**

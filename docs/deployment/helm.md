@@ -13,7 +13,7 @@ helm install headlamp headlamp/headlamp \
   --create-namespace \
   --set config.pluginsDir=/headlamp/plugins \
   --set pluginsManager.sources[0].name=tns-csi \
-  --set pluginsManager.sources[0].url=https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
+  --set pluginsManager.sources[0].url=https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.0/tns-csi-1.0.0.tar.gz
 ```
 
 ## Complete values.yaml Example
@@ -27,7 +27,7 @@ config:
 pluginsManager:
   sources:
     - name: tns-csi
-      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
+      url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.0/tns-csi-1.0.0.tar.gz
 
 serviceAccount:
   name: headlamp
@@ -81,7 +81,7 @@ spec:
     pluginsManager:
       sources:
         - name: tns-csi
-          url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v0.2.4/tns-csi-0.2.4.tar.gz
+          url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.0/tns-csi-1.0.0.tar.gz
 ```
 
 ## RBAC Manifest (Apply Separately)

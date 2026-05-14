@@ -1,5 +1,5 @@
 {
-  "name": "tns-csi",
+  "name": "headlamp-tns-csi-plugin",
   "version": "1.0.0",
   "description": "Headlamp plugin for TNS-CSI driver visibility and benchmarking",
   "repository": {

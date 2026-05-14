@@ -1,4 +1,4 @@
-version: "1.0.0"
+version: "1.0.1"
 name: headlamp-tns-csi-plugin
 displayName: TrueNAS CSI (tns-csi)
 description: >-
@@ -63,7 +63,7 @@ changes:
     description: "GitHub App token secrets passed to release workflow"
 
 annotations:
-  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.0/tns-csi-1.0.0.tar.gz"
-  headlamp/plugin/archive-checksum: sha256:e38846ceb17a79438f8aecc50f22920b0efa7456f3ebb3e628d89856af83ad01
+  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.1/headlamp-tns-csi-plugin-1.0.0.tar.gz"
+  headlamp/plugin/archive-checksum: sha256:bbd55c3debd42c508686b505d373625e354286af6f73a3d0107df82293e9a2bc
   headlamp/plugin/version-compat: ">=0.20.0"
   headlamp/plugin/distro-compat: "in-cluster,web,app"

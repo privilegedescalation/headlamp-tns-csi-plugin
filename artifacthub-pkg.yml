@@ -1,5 +1,5 @@
-version: "1.0.1"
-name: headlamp-tns-csi-plugin
+version: "1.0.2"
+name: tns-csi
 displayName: TrueNAS CSI (tns-csi)
 description: >-
   Headlamp plugin for tns-csi CSI driver visibility and kbench storage
@@ -63,7 +63,7 @@ changes:
     description: "GitHub App token secrets passed to release workflow"
 
 annotations:
-  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.1/headlamp-tns-csi-plugin-1.0.0.tar.gz"
-  headlamp/plugin/archive-checksum: sha256:bbd55c3debd42c508686b505d373625e354286af6f73a3d0107df82293e9a2bc
+  headlamp/plugin/archive-url: "https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.2/tns-csi-1.0.0.tar.gz"
+  headlamp/plugin/archive-checksum: sha256:3e4fa137c912eb13610557dd82ef7086fc396a42365e30a39e618afa97bbc202
   headlamp/plugin/version-compat: ">=0.20.0"
   headlamp/plugin/distro-compat: "in-cluster,web,app"

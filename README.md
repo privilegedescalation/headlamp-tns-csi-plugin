@@ -66,6 +66,10 @@ pluginsManager:
       url: https://github.com/privilegedescalation/headlamp-tns-csi-plugin/releases/download/v1.0.0/tns-csi-1.0.0.tar.gz
 ```
 
+
+
+> See [Plugin Installation Policy](https://git.farh.net/privilegedescalation/org/wiki/Plugin-Installation-Policy) for approved installation methods.
+
 ## RBAC / Security Setup
 
 The plugin reads from the Kubernetes API and the tns-csi controller pod's Prometheus endpoint (deployed in `kube-system`). The Benchmark page additionally creates and deletes Jobs and PVCs.

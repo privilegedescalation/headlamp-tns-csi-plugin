@@ -1,5 +1,10 @@
 # Headlamp TNS-CSI Plugin
 
+> [!WARNING]
+> **Deprecated — this plugin is no longer maintained.**
+>
+> The `tns-csi` driver (`tns.csi.io`) that this plugin targets has been replaced by the **first-party TrueNAS CSI driver**. Use the first-party TrueNAS CSI driver instead. This repository will be archived and will receive no further releases, fixes, or security updates.
+
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/package/headlamp/tns-csi/headlamp-tns-csi-plugin)](https://artifacthub.io/packages/headlamp/tns-csi/headlamp-tns-csi-plugin)
 [![CI](https://github.com/privilegedescalation/headlamp-tns-csi-plugin/actions/workflows/ci.yaml/badge.svg)](https://github.com/privilegedescalation/headlamp-tns-csi-plugin/actions/workflows/ci.yaml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

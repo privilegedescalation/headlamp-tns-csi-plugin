@@ -2,6 +2,8 @@ version: "1.0.3"
 name: headlamp-tns-csi-plugin
 displayName: TrueNAS CSI (tns-csi)
 description: >-
+  DEPRECATED: no longer maintained. The tns-csi driver has been replaced by
+  the first-party TrueNAS CSI driver; use that instead.
   Headlamp plugin for tns-csi CSI driver visibility and kbench storage
   benchmarking. Surfaces StorageClasses with protocol/pool/server details,
   PersistentVolumes, VolumeSnapshots, Prometheus metrics from the controller
@@ -11,6 +13,7 @@ description: >-
 createdAt: "2026-02-18T00:00:00Z"
 license: Apache-2.0
 category: storage
+deprecated: true
 
 homeURL: https://github.com/privilegedescalation/headlamp-tns-csi-plugin
 appVersion: "0.17.4"

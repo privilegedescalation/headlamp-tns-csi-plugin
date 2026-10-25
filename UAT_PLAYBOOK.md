@@ -25,7 +25,7 @@ Headlamp **Storage** tables, which have plugin-injected columns.
 | 5 | Navigate to TrueNAS (tns-csi) → Benchmark | "TNS-CSI — Benchmark" loads with the Benchmark Guide, Run New Benchmark form, and Past Benchmarks. **Do not start a run.** It is the plugin's only write operation | |
 | 6 | Navigate to native **Storage → Storage Classes** | The table has the plugin-injected **Protocol**, **Pool**, and **Server** columns. Rows that are not `tns.csi.io` show "—" | |
 | 7 | Navigate to native **Storage → Persistent Volumes** | The table has the plugin-injected **Protocol** and **Pool** columns. PVs that are not `tns.csi.io` show "—" | |
-| 8 | Open a PVC bound to a `tns.csi.io` PV (Storage → Persistent Volume Claims → PVC) | The detail view includes an injected "TNS-CSI Storage Details" section. **Blocked until PRI-2112 lands** because the viewer SA cannot read PVCs | |
+| 8 | Open a PVC bound to a `tns.csi.io` PV (Storage → Persistent Volume Claims → PVC) | The detail view includes an injected "TNS-CSI Storage Details" section. **Untestable in `headlamp-uat`:** the cluster has no `tns.csi.io` CSIDriver, StorageClass, or PV, so there is no qualifying PVC to open. PRI-2112 is resolved and PVC reads work; a PVC that is not `tns.csi.io`-backed correctly shows no TNS-CSI section | |
 | 9 | *(Optional deep link)* Open `/c/main/tns-csi/storage-classes` | "TNS-CSI — Storage Classes" loads (route kept for direct links; not in the sidebar) | |
 | 10 | *(Optional deep link)* Open `/c/main/tns-csi/volumes` | "TNS-CSI — Volumes" loads (route kept for direct links; not in the sidebar) | |
 
@@ -36,9 +36,10 @@ These are correct plugin behaviour. Do not file them as defects.
 - **No `tns.csi.io` driver in the cluster:** Overview and Metrics show a "Driver Not Detected"
   card ("CSIDriver tns.csi.io not found on this cluster" / "TNS-CSI driver not found on this
   cluster"). This is graceful degradation.
-- **Current viewer SA cannot read PVCs (PRI-2112):** the plugin pages show an "Error" card that
-  contains `persistentvolumeclaims is forbidden`. The plugin is surfacing the RBAC denial
-  explicitly, as intended. This also makes step 8 untestable until PRI-2112 is resolved.
+- **Viewer SA cannot read PVCs (RBAC denial):** if the Headlamp service account lacks PVC read
+  access, the plugin pages show an "Error" card that contains `persistentvolumeclaims is
+  forbidden`. The plugin is surfacing the RBAC denial explicitly, as intended. This does not
+  occur in `headlamp-uat` today: PRI-2112 granted the access and the PVC list returns 200.
 
 ## Pass Criteria
 
@@ -47,7 +48,7 @@ These are correct plugin behaviour. Do not file them as defects.
   failure-mode cards are acceptable)
 - The native Storage Classes table shows the Protocol / Pool / Server columns
 - The native Persistent Volumes table shows the Protocol / Pool columns
-- The PVC detail section is injected (only once PRI-2112 is resolved)
+- The PVC detail section is injected (only when the cluster has a `tns.csi.io`-backed PVC)
 
 ## Fail Criteria
 
@@ -63,5 +64,5 @@ These are correct plugin behaviour. Do not file them as defects.
 - Screenshot: Overview with the Driver Status card (or the Driver Not Detected card)
 - Screenshot: native Storage Classes table with the Protocol / Pool / Server columns
 - Screenshot: native Persistent Volumes table with the Protocol / Pool columns
-- Screenshot: PVC detail view with the injected TNS-CSI section (when PRI-2112 allows)
+- Screenshot: PVC detail view with the injected TNS-CSI section (when a `tns.csi.io`-backed PVC exists)
 - Console errors (attach a screenshot of any browser console errors)
